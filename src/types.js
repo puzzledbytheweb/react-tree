@@ -1,7 +1,9 @@
-import Proptypes from "prop-types";
+import PropTypes from "prop-types";
 
-export const CellInterface = Proptypes.shape({
-  name: Proptypes.string.isRequired,
-  id: Proptypes.string.isRequired,
-  child: Proptypes.arrayOf(Proptypes.shape(this)),
+// Recursive type where child will be an array of identical objects
+export const CellInterface = PropTypes.shape({
+  name: PropTypes.string.isRequired,
+  // ID should be unique, use
+  id: PropTypes.string.isRequired,
+  child: PropTypes.arrayOf(PropTypes.shape(this)),
 });
