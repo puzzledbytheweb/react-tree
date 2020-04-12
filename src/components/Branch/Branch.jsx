@@ -1,20 +1,18 @@
 import React from "react";
-import Proptypes from "prop-types";
-
-import List from "../List";
-import ListCell from "../ListCell";
+import { CellInterface } from "../../types";
 
 const Branch = ({ objectBranch }) => {
+  console.log(objectBranch);
   // Render either a List or a ListCell regarding if the object has a child or not
   if (!objectBranch.child) {
-    return Branch;
+    return <div>yo</div>;
   }
 
-  return objectBranch;
+  return <div></div>;
 };
 
-Branch.proptypes = {
-  objectBranch: Proptypes.object,
+Branch.propTypes = {
+  objectBranch: CellInterface,
 };
 
 export default Branch;

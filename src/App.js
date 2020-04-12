@@ -2,8 +2,6 @@ import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
-import List from "./components/List/List";
-import ListCell from "./components/ListCell/ListCell";
 import TreeContainer from "./containers/TreeContainer/TreeContainer";
 
 function App() {
