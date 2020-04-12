@@ -4,6 +4,7 @@ import "./App.css";
 
 import List from "./components/List/List";
 import ListCell from "./components/ListCell/ListCell";
+import TreeContainer from "./containers/TreeContainer/TreeContainer";
 
 function App() {
   return (
@@ -21,19 +22,7 @@ function App() {
         >
           Learn React
         </a>
-        <List>
-          <ListCell>
-            Hey!
-            <List>
-              <ListCell>
-                Yo
-                <List>
-                  <ListCell>Hey Yo</ListCell>
-                </List>
-              </ListCell>
-            </List>
-          </ListCell>
-        </List>
+        <TreeContainer />
       </header>
     </div>
   );
