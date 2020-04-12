@@ -9,7 +9,28 @@ const TreeContainer = () => {
     {
       name: "yo",
       id: uuidv4(UUIDV4_NAMESPACE),
-      child: [{ name: "yo.yo", id: uuidv4(UUIDV4_NAMESPACE), child: null }],
+      children: [
+        {
+          name: "yo.yo",
+          id: uuidv4(UUIDV4_NAMESPACE),
+          children: [
+            { name: "yo.yo.yo", id: uuidv4(UUIDV4_NAMESPACE), children: null },
+          ],
+        },
+      ],
+    },
+    {
+      name: "bo",
+      id: uuidv4(UUIDV4_NAMESPACE),
+      children: [
+        {
+          name: "bo.bo",
+          id: uuidv4(UUIDV4_NAMESPACE),
+          children: [
+            { name: "bo.bo.bo", id: uuidv4(UUIDV4_NAMESPACE), children: null },
+          ],
+        },
+      ],
     },
   ]);
 

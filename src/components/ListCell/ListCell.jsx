@@ -2,12 +2,16 @@ import React from "react";
 
 import PropTypes from "prop-types";
 
-const ListCell = ({ children }) => {
-  return <li>{children}</li>;
+const ListCell = ({ name }) => {
+  return (
+    <li>
+      <h3>{name}</h3>
+    </li>
+  );
 };
 
 ListCell.propTypes = {
-  children: PropTypes.node.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
 export default ListCell;
