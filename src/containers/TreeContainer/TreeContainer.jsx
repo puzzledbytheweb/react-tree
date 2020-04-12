@@ -5,16 +5,31 @@ import { UUIDV4_NAMESPACE } from "../../constants";
 import Tree from "../../components/Tree/Tree";
 
 const TreeContainer = () => {
-  const [tree, setTree] = useState([
+  const initialTree = [
     {
       name: "yo",
       id: uuidv4(UUIDV4_NAMESPACE),
+      items: [{ name: "yo.item", id: uuidv4(UUIDV4_NAMESPACE), checked: true }],
       children: [
         {
           name: "yo.yo",
           id: uuidv4(UUIDV4_NAMESPACE),
+          items: [
+            { name: "yo.yo.item", id: uuidv4(UUIDV4_NAMESPACE), checked: true },
+          ],
           children: [
-            { name: "yo.yo.yo", id: uuidv4(UUIDV4_NAMESPACE), children: null },
+            {
+              name: "yo.yo.yo",
+              id: uuidv4(UUIDV4_NAMESPACE),
+              children: null,
+              items: [
+                {
+                  name: "yo.yo.yo.item",
+                  id: uuidv4(UUIDV4_NAMESPACE),
+                  checked: true,
+                },
+              ],
+            },
           ],
         },
       ],
@@ -32,9 +47,9 @@ const TreeContainer = () => {
         },
       ],
     },
-  ]);
+  ];
 
-  return <Tree objectTree={tree} />;
+  return <Tree initialTree={initialTree} />;
 };
 
 TreeContainer.propTypes = {};
