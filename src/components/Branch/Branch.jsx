@@ -9,7 +9,7 @@ import ListCell from "../ListCell/ListCell";
 const Branch = ({ objectBranch, onItemCheck, parentId }) => {
   const { name, items, children, id } = objectBranch;
 
-  const handleItemCheck = (item, path) => {
+  const createNewPath = (path) => {
     let newPath = path || "";
 
     // Checking if we are deeper than one level, i.e. this is not the root node
@@ -18,6 +18,12 @@ const Branch = ({ objectBranch, onItemCheck, parentId }) => {
     if (parentId) {
       newPath += "|" + parentId;
     }
+
+    return newPath;
+  };
+
+  const handleItemCheck = (item, path) => {
+    const newPath = createNewPath(path);
 
     onItemCheck(item, newPath);
   };
