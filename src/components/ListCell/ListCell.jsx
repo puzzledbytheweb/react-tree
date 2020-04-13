@@ -9,7 +9,7 @@ const ListCell = ({ name, items, onItemCheck, parentId }) => (
     {items &&
       items.map((item) => (
         <div style={{ display: "flex" }} key={item.id}>
-          <p>item.name</p>
+          <p>{item.name}</p>
           <input
             onChange={() => onItemCheck(item, parentId)}
             checked={item.checked}

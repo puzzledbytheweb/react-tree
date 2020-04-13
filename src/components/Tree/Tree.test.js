@@ -1,17 +1,11 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 
 import initialTree from "../../mocks/initialTree";
 import Tree from "./Tree";
 
 test("does typechecking on objectTree", () => {
   const stub = jest.spyOn(console, "error");
-
-  const firstObjectTree = {
-    name: "first",
-    id: "1",
-    child: [{ name: "first.first", id: "1.1", child: null }],
-  };
 
   render(<Tree initialTree={initialTree} />);
 
@@ -33,9 +27,19 @@ test("does typechecking on objectTree", () => {
 test("Checks an item in any branch of the tree", () => {
   const { getByText } = render(<Tree initialTree={initialTree} />);
 
-  const item1ToCheck = getByText("yo.item");
-  const item2ToCheck = getByText("yo.yo.yo.item");
-  const item3ToCheck = getByText("bo.bo.bo.item");
+  const item1Checkbox = getByText("yo.item").nextSibling;
+  const item2Checkbox = getByText("yo.yo.yo.item").nextSibling;
+  const item3Checkbox = getByText("bo.bo.bo.item").nextSibling;
 
-  console.log(item1ToCheck, item2ToCheck, item3ToCheck);
+  expect(item1Checkbox.checked).toBe(true);
+  expect(item2Checkbox.checked).toBe(true);
+  expect(item3Checkbox.checked).toBe(false);
+
+  fireEvent.click(item1Checkbox);
+  fireEvent.click(item2Checkbox);
+  fireEvent.click(item3Checkbox);
+
+  expect(item1Checkbox.checked).toBe(false);
+  expect(item2Checkbox.checked).toBe(false);
+  expect(item3Checkbox.checked).toBe(true);
 });
