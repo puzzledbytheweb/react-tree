@@ -6,7 +6,7 @@ import { LevelInterface } from "../../types";
 import List from "../List/List";
 import ListCell from "../ListCell/ListCell";
 
-const Branch = ({ objectBranch, onItemCheck, parentId }) => {
+const Branch = ({ objectBranch, onItemCheck, parentId, onAddCell }) => {
   const { name, items, children, id } = objectBranch;
 
   const createNewPath = (path) => {
@@ -28,6 +28,12 @@ const Branch = ({ objectBranch, onItemCheck, parentId }) => {
     onItemCheck(item, newPath);
   };
 
+  const handleAddCell = (path, values) => {
+    const newPath = createNewPath(path);
+
+    onAddCell(newPath, values);
+  };
+
   return (
     <List>
       <ListCell
@@ -35,6 +41,7 @@ const Branch = ({ objectBranch, onItemCheck, parentId }) => {
         items={items}
         parentId={id}
         onItemCheck={handleItemCheck}
+        onAddCell={handleAddCell}
       />
       {children &&
         children.map((individualChild) => (
@@ -42,6 +49,7 @@ const Branch = ({ objectBranch, onItemCheck, parentId }) => {
             key={individualChild.id}
             objectBranch={individualChild}
             onItemCheck={handleItemCheck}
+            onAddCell={handleAddCell}
             parentId={id}
           />
         ))}
@@ -51,7 +59,9 @@ const Branch = ({ objectBranch, onItemCheck, parentId }) => {
 
 Branch.propTypes = {
   objectBranch: LevelInterface,
-  onItemCheck: PropTypes.func,
+  onItemCheck: PropTypes.func.isRequired,
+  onAddCell: PropTypes.func.isRequired,
+  parentId: PropTypes.string || null,
 };
 
 export default Branch;

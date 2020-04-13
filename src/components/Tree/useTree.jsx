@@ -1,8 +1,31 @@
 import { useState } from "react";
 
+import { v4 as uuidv4 } from "uuid";
+import { UUIDV4_NAMESPACE } from "../../constants";
+
 const useTree = (initialTree) => {
   const [tree, setTree] = useState(initialTree);
 
+  const handleCellAdd = (path, values) => {
+    const newTree = [...tree];
+
+    let currentParentNode = findTreeNode(newTree, path);
+
+    // Creating children if it doesn't already exist
+    if (!currentParentNode.children) currentParentNode.children = [];
+
+    currentParentNode.children.push({
+      name: values.name,
+      // ID should be unique, use
+      id: uuidv4(UUIDV4_NAMESPACE),
+      items: null,
+      children: [],
+    });
+
+    setTree(newTree);
+  };
+
+  // This is for the bonus
   const handleItemCheck = (item, path) => {
     const newTree = [...tree];
     let currentParentNode = findTreeNode(newTree, path);
@@ -20,6 +43,7 @@ const useTree = (initialTree) => {
   return {
     tree,
     handleItemCheck,
+    handleCellAdd,
   };
 };
 

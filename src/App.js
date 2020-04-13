@@ -4,7 +4,6 @@ import "./App.css";
 
 import initialTree from "./mocks/initialTree";
 
-import TreeContainer from "./containers/TreeContainer/TreeContainer";
 import Tree from "./components/Tree/Tree";
 
 function App() {

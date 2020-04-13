@@ -8,18 +8,23 @@ import useTree from "./useTree";
 import Branch from "../Branch/Branch";
 
 const Tree = ({ initialTree }) => {
-  const { tree, handleItemCheck } = useTree(initialTree);
+  const { tree, handleItemCheck, handleCellAdd } = useTree(initialTree);
 
   // Create a branch for each root
-  return tree.map((branch) => {
-    return (
-      <Branch
-        key={branch.id}
-        objectBranch={branch}
-        onItemCheck={handleItemCheck}
-      />
-    );
-  });
+  return (
+    <div>
+      {tree.map((branch) => {
+        return (
+          <Branch
+            key={branch.id}
+            objectBranch={branch}
+            onItemCheck={handleItemCheck}
+            onAddCell={handleCellAdd}
+          />
+        );
+      })}
+    </div>
+  );
 };
 
 Tree.propTypes = {
