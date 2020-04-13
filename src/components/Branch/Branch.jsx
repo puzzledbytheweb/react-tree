@@ -6,8 +6,11 @@ import { LevelInterface } from "../../types";
 import List from "../List/List";
 import ListCell from "../ListCell/ListCell";
 
-const Branch = ({ objectBranch, onItemCheck }) => {
-  const { name, items, children, id, parentId } = objectBranch;
+const Branch = ({ objectBranch, onItemCheck, parentId }) => {
+  const { name, items, children, id } = objectBranch;
+
+  console.log(parentId);
+  console.log(name);
 
   const handleItemCheck = (item, path) => {
     let newPath = path || "";
@@ -16,31 +19,31 @@ const Branch = ({ objectBranch, onItemCheck }) => {
     // We are creating a path of ids here, so that when we need to
     // traverse the branch we know where to go
     if (parentId) {
-      newPath += parentId + "|";
+      newPath += "|" + parentId;
     }
 
+    console.log(parentId);
     // Calling this function with 3rd param when we are in the root
     onItemCheck(item, newPath, !newPath && id);
   };
 
   return (
     <List>
-      <ListCell name={name} items={items} onItemCheck={handleItemCheck} />
-      {/* We are checking whether the objectBranch has children */}
+      <ListCell
+        name={name}
+        items={items}
+        parentId={id}
+        onItemCheck={handleItemCheck}
+      />
       {children &&
-        children.map((individualChild) => {
-          individualChild.parentId = id;
-
-          console.log(individualChild.name, individualChild.parentId);
-
-          return (
-            <Branch
-              key={individualChild.id}
-              objectBranch={individualChild}
-              onItemCheck={handleItemCheck}
-            />
-          );
-        })}
+        children.map((individualChild) => (
+          <Branch
+            key={individualChild.id}
+            objectBranch={individualChild}
+            onItemCheck={handleItemCheck}
+            parentId={id}
+          />
+        ))}
     </List>
   );
 };

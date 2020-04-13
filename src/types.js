@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-const LevelItemInterface = PropTypes.shape({
+export const LevelItemInterface = PropTypes.shape({
   name: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   checked: PropTypes.bool,

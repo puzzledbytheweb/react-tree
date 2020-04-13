@@ -1,8 +1,9 @@
 import React from "react";
+import { LevelItemInterface } from "../../types";
 
 import PropTypes from "prop-types";
 
-const ListCell = ({ name, items, onItemCheck }) => (
+const ListCell = ({ name, items, onItemCheck, parentId }) => (
   <li>
     <h3>{name}</h3>
     {items &&
@@ -10,7 +11,7 @@ const ListCell = ({ name, items, onItemCheck }) => (
         <div style={{ display: "flex" }} key={item.id}>
           <p>item.name</p>
           <input
-            onChange={() => onItemCheck(item)}
+            onChange={() => onItemCheck(item, parentId)}
             checked={item.checked}
             type="checkbox"
           />
@@ -21,6 +22,9 @@ const ListCell = ({ name, items, onItemCheck }) => (
 
 ListCell.propTypes = {
   name: PropTypes.string.isRequired,
+  items: PropTypes.arrayOf(LevelItemInterface),
+  onItemCheck: PropTypes.func.isRequired,
+  parentId: PropTypes.string,
 };
 
 export default ListCell;
