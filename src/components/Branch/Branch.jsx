@@ -9,9 +9,6 @@ import ListCell from "../ListCell/ListCell";
 const Branch = ({ objectBranch, onItemCheck, parentId }) => {
   const { name, items, children, id } = objectBranch;
 
-  console.log(parentId);
-  console.log(name);
-
   const handleItemCheck = (item, path) => {
     let newPath = path || "";
 
@@ -22,9 +19,7 @@ const Branch = ({ objectBranch, onItemCheck, parentId }) => {
       newPath += "|" + parentId;
     }
 
-    console.log(parentId);
-    // Calling this function with 3rd param when we are in the root
-    onItemCheck(item, newPath, !newPath && id);
+    onItemCheck(item, newPath);
   };
 
   return (
