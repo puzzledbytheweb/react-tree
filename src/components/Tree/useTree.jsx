@@ -6,6 +6,16 @@ import { UUIDV4_NAMESPACE } from "../../constants";
 const useTree = (initialTree) => {
   const [tree, setTree] = useState(initialTree);
 
+  const handleCellRemove = (path) => {
+    let newTree = [...tree];
+
+    console.log(path);
+    // eslint-disable-next-line no-unused-vars
+    newTree = deleteTreeNode(newTree, path);
+
+    setTree(newTree);
+  };
+
   const handleCellAdd = (path, values) => {
     const newTree = [...tree];
 
@@ -44,6 +54,7 @@ const useTree = (initialTree) => {
     tree,
     handleItemCheck,
     handleCellAdd,
+    handleCellRemove,
   };
 };
 
@@ -54,7 +65,7 @@ const findTreeNode = (tree, path) => {
 
   let currentParentNode = null;
 
-  // Finding the tree node that contains the item
+  // Finding the tree
   for (let i = 0; i < splittedPath.length; i++) {
     if (i === 0) {
       currentParentNode = tree.find((node) => node.id === splittedPath[i]);
@@ -66,4 +77,48 @@ const findTreeNode = (tree, path) => {
   }
 
   return currentParentNode;
+};
+
+// TODO: This has bugs please solve fast!!
+const deleteTreeNode = (tree, path) => {
+  const splittedPath = path.split("|").reverse();
+
+  let currentParentNode = null;
+
+  for (let i = 0; i < splittedPath.length; i++) {
+    // Making sure that currentParentNode is not null when needed
+    if (i === 0) {
+      currentParentNode = tree.find((node) => node.id === splittedPath[i]);
+    } else {
+      const nextParentNode = currentParentNode.children.find(
+        (node) => node.id === splittedPath[i]
+      );
+
+      // We're checking if nextParentNode has children, if it doesn't it means we are on a leaf
+      // So we maintain the currentParentNode se we delete via its children
+      if (nextParentNode.children) {
+        currentParentNode = nextParentNode.children.length
+          ? nextParentNode
+          : currentParentNode;
+      }
+    }
+
+    // Checking if we want to delete root
+    if (splittedPath.length === 1) {
+      const nodeToDeleteIndex = tree.findIndex(
+        (node) => node.id === splittedPath[i]
+      );
+
+      tree.splice(nodeToDeleteIndex, 1);
+    } else if (i === splittedPath.length - 1) {
+      // Checking if we are in previous to last node so we can delete correct child
+      const childToDeleteIndex = currentParentNode.children.findIndex(
+        (node) => node.id === splittedPath[i]
+      );
+
+      currentParentNode.children.splice(childToDeleteIndex, 1);
+    }
+  }
+
+  return tree;
 };

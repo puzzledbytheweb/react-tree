@@ -5,13 +5,22 @@ import { LevelItemInterface } from "../../types";
 
 import AddCell from "../AddCell/AddCell";
 
-const ListCell = ({ name, items, onItemCheck, onAddCell, parentId }) => {
-  const handleHandleCell = (values) => onAddCell(parentId, values);
+const ListCell = ({
+  name,
+  items,
+  onItemCheck,
+  onAddCell,
+  onRemoveCell,
+  parentId,
+}) => {
+  const handleAddCell = (values) => onAddCell(parentId, values);
+  const handleRemoveCell = () => onRemoveCell(parentId);
 
   return (
     <li>
       <h3>{name}</h3>
-      <AddCell onAddCell={handleHandleCell} />
+      <button onClick={handleRemoveCell}>Remove this Cell!!</button>
+      <AddCell onAddCell={handleAddCell} />
       {items &&
         items.map((item) => (
           <div style={{ display: "flex" }} key={item.id}>
@@ -32,6 +41,7 @@ ListCell.propTypes = {
   items: PropTypes.arrayOf(LevelItemInterface),
   onItemCheck: PropTypes.func.isRequired,
   onAddCell: PropTypes.func.isRequired,
+  onRemoveCell: PropTypes.func.isRequired,
   parentId: PropTypes.string,
 };
 
