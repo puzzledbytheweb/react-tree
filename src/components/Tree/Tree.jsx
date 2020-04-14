@@ -8,9 +8,17 @@ import useTree from "./useTree";
 import Branch from "../Branch/Branch";
 
 const Tree = ({ initialTree }) => {
-  const { tree, handleItemCheck, handleCellAdd, handleCellRemove } = useTree(
-    initialTree
-  );
+  const {
+    tree,
+    handleItemCheck,
+    handleCellAdd,
+    handleCellRemove,
+    handleEditCellName,
+  } = useTree(initialTree);
+
+  const onEditCellName = (path, values) => {
+    handleEditCellName(path, values.name);
+  };
 
   // Create a branch for each root
   return (
@@ -23,6 +31,7 @@ const Tree = ({ initialTree }) => {
             onItemCheck={handleItemCheck}
             onAddCell={handleCellAdd}
             onRemoveCell={handleCellRemove}
+            onEditCellName={onEditCellName}
           />
         );
       })}

@@ -49,11 +49,25 @@ const useTree = (initialTree) => {
     setTree(newTree);
   };
 
+  const handleEditCellName = (path, newName) => {
+    const newTree = [...tree];
+
+    let currentParentNode = findTreeNode(newTree, path);
+
+    currentParentNode.name = newName;
+
+    setTree(newTree);
+  };
+
+  const handleAddCellItem = (path, item) => {};
+
   return {
     tree,
     handleItemCheck,
     handleCellAdd,
     handleCellRemove,
+    handleEditCellName,
+    handleAddCellItem,
   };
 };
 

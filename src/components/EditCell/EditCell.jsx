@@ -2,7 +2,8 @@ import React, { useState } from "react";
 
 import PropTypes from "prop-types";
 
-import AddCellForm from "./AddCellForm";
+import EditCellForm from "./EditCellForm";
+
 import useOpen from "../../hooks/useOpen";
 
 const AddCell = ({ onAddCell }) => {
@@ -16,7 +17,7 @@ const AddCell = ({ onAddCell }) => {
   return (
     <>
       <div style={{ display: open ? "initial" : "none" }}>
-        <AddCellForm onSubmit={handleSubmission} />
+        <EditCellForm onSubmit={handleSubmission} />
       </div>
       <button onClick={toggleOpen}>Add a new location!</button>
     </>

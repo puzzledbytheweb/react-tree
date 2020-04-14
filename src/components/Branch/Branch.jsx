@@ -12,6 +12,7 @@ const Branch = ({
   parentId,
   onAddCell,
   onRemoveCell,
+  onEditCellName,
 }) => {
   const { name, items, children, id } = objectBranch;
 
@@ -46,6 +47,12 @@ const Branch = ({
     onRemoveCell(newPath);
   };
 
+  const handleEditCellName = (path, values) => {
+    const newPath = createNewPath(path);
+
+    onEditCellName(newPath, values);
+  };
+
   return (
     <List>
       <ListCell
@@ -55,6 +62,7 @@ const Branch = ({
         onItemCheck={handleItemCheck}
         onAddCell={handleAddCell}
         onRemoveCell={handleRemoveCell}
+        onEditCellName={handleEditCellName}
       />
       {children &&
         children.map((individualChild) => (
@@ -65,6 +73,7 @@ const Branch = ({
             onItemCheck={handleItemCheck}
             onAddCell={handleAddCell}
             onRemoveCell={handleRemoveCell}
+            onEditCellName={handleEditCellName}
           />
         ))}
     </List>
@@ -76,6 +85,7 @@ Branch.propTypes = {
   onItemCheck: PropTypes.func.isRequired,
   onAddCell: PropTypes.func.isRequired,
   onRemoveCell: PropTypes.func.isRequired,
+  onEditCellName: PropTypes.func.isRequired,
   parentId: PropTypes.string || null,
 };
 
