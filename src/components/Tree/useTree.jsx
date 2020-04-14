@@ -23,7 +23,7 @@ const useTree = (initialTree) => {
     // Creating children if it doesn't already exist
     if (!currentParentNode.children) currentParentNode.children = [];
 
-    currentParentNode.children.push({
+    currentParentNode.children.unshift({
       name: values.name,
       // ID should be unique, use
       id: uuidv4(UUIDV4_NAMESPACE),

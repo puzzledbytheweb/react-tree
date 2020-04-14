@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Button } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import EditCellForm from "./EditCellForm";
+import FormWithNameInput from "../FormWithNameInput/FormWithNameInput";
 
 import useOpen from "../../hooks/useOpen";
 
@@ -18,7 +18,11 @@ const EditCellName = ({ onEditCellName }) => {
   return (
     <>
       <div style={{ display: open ? "initial" : "none" }}>
-        <EditCellForm onSubmit={handleSubmission} />
+        <FormWithNameInput
+          data-testid="editNodeForm"
+          onSubmit={handleSubmission}
+          initialValues={{ name: "" }}
+        />
       </div>
       <Button color="warning" size="xs" onClick={toggleOpen}>
         <FontAwesomeIcon size="xs" icon="pencil-alt" />
