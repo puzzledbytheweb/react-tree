@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 import { LevelItemInterface } from "../../types";
 
 import AddCell from "../AddCell/AddCell";
-import EditCellForm from "./EditCellForm";
+import EditCell from "../EditCell/EditCell";
 
 import AddCellItem from "../AddCellItem/AddCellItem";
 
@@ -18,28 +18,15 @@ const ListCell = ({
   onAddCellItem,
   parentId,
 }) => {
-  const [open, setOpen] = useState(false);
-  const toggleEditOpen = () => setOpen(!open);
-
   const handleAddCell = (values) => onAddCell(parentId, values);
-
-  const handleEditSubmission = (values) => {
-    toggleEditOpen();
-    onEditCellName(parentId, values);
-  };
-
+  const handleEditSubmission = (values) => onEditCellName(parentId, values);
   const handleAddCellItem = (values) => onAddCellItem(parentId, values);
   const handleRemoveCell = () => onRemoveCell(parentId);
 
   return (
     <li>
-      <div style={{ display: open ? "initial" : "none" }}>
-        <EditCellForm onSubmit={handleEditSubmission} />
-      </div>
-      <h3>
-        {name}
-        <button onClick={toggleEditOpen}>Edit Name</button>
-      </h3>
+      <EditCell onEditCellName={handleEditSubmission} />
+      <h3>{name}</h3>
       <button data-testid="removeButton" onClick={handleRemoveCell}>
         Remove this Cell!!
       </button>

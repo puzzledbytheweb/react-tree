@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import { LevelInterface } from "../../types";
 
+import useOpen from "../../hooks/useOpen";
+
 import List from "../List/List";
 import ListCell from "../ListCell/ListCell";
 
@@ -14,6 +16,7 @@ const Branch = ({
   onRemoveCell,
   onEditCellName,
 }) => {
+  const { open, toggleOpen } = useOpen(true);
   const { name, items, children, id } = objectBranch;
 
   const createNewPath = (path) => {
@@ -54,29 +57,32 @@ const Branch = ({
   };
 
   return (
-    <List>
-      <ListCell
-        name={name}
-        items={items}
-        parentId={id}
-        onItemCheck={handleItemCheck}
-        onAddCell={handleAddCell}
-        onRemoveCell={handleRemoveCell}
-        onEditCellName={handleEditCellName}
-      />
-      {children &&
-        children.map((individualChild) => (
-          <Branch
-            key={individualChild.id}
-            objectBranch={individualChild}
-            parentId={id}
-            onItemCheck={handleItemCheck}
-            onAddCell={handleAddCell}
-            onRemoveCell={handleRemoveCell}
-            onEditCellName={handleEditCellName}
-          />
-        ))}
-    </List>
+    <>
+      <button onClick={toggleOpen}>Collapse!</button>
+      <List style={{ display: open ? "block" : "none" }}>
+        <ListCell
+          name={name}
+          items={items}
+          parentId={id}
+          onItemCheck={handleItemCheck}
+          onAddCell={handleAddCell}
+          onRemoveCell={handleRemoveCell}
+          onEditCellName={handleEditCellName}
+        />
+        {children &&
+          children.map((individualChild) => (
+            <Branch
+              key={individualChild.id}
+              objectBranch={individualChild}
+              parentId={id}
+              onItemCheck={handleItemCheck}
+              onAddCell={handleAddCell}
+              onRemoveCell={handleRemoveCell}
+              onEditCellName={handleEditCellName}
+            />
+          ))}
+      </List>
+    </>
   );
 };
 

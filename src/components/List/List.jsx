@@ -2,8 +2,8 @@ import React from "react";
 
 import PropTypes from "prop-types";
 
-const List = ({ children }) => {
-  return <ol>{children}</ol>;
+const List = ({ children, ...props }) => {
+  return <ol {...props}>{children}</ol>;
 };
 
 // https://stackoverflow.com/questions/42122522/reactjs-what-should-the-proptypes-be-for-this-props-children

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import PropTypes from "prop-types";
 
@@ -6,12 +6,12 @@ import EditCellForm from "./EditCellForm";
 
 import useOpen from "../../hooks/useOpen";
 
-const AddCell = ({ onAddCell }) => {
+const EditCellName = ({ onEditCellName }) => {
   const { open, toggleOpen } = useOpen(false);
 
   const handleSubmission = (values) => {
     toggleOpen();
-    onAddCell(values);
+    onEditCellName(values);
   };
 
   return (
@@ -19,12 +19,13 @@ const AddCell = ({ onAddCell }) => {
       <div style={{ display: open ? "initial" : "none" }}>
         <EditCellForm onSubmit={handleSubmission} />
       </div>
-      <button onClick={toggleOpen}>Add a new location!</button>
+      <button onClick={toggleOpen}>Edit Name!</button>
     </>
   );
 };
-AddCell.propTypes = {
-  onAddCell: PropTypes.func.isRequired,
+
+EditCellName.propTypes = {
+  onEditCellName: PropTypes.func.isRequired,
 };
 
-export default AddCell;
+export default EditCellName;
