@@ -9,7 +9,6 @@ const useTree = (initialTree) => {
   const handleCellRemove = (path) => {
     let newTree = [...tree];
 
-    // eslint-disable-next-line no-unused-vars
     newTree = deleteTreeNode(newTree, path);
 
     setTree(newTree);
@@ -25,7 +24,6 @@ const useTree = (initialTree) => {
 
     currentParentNode.children.unshift({
       name: values.name,
-      // ID should be unique, use
       id: uuidv4(UUIDV4_NAMESPACE),
       items: null,
       children: [],

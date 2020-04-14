@@ -1,6 +1,7 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import AddCell from "./AddCell";
+import "../../fontawesome";
 
 test("Displays form to add node", () => {
   const onAddCellMock = jest.fn();

@@ -1,9 +1,9 @@
 import React from "react";
 import { render, fireEvent, within } from "@testing-library/react";
+import "../../fontawesome";
 
 import initialTree from "../../mocks/initialTree";
 
-import useTree from "./useTree";
 import Tree from "./Tree";
 
 test("Does typechecking on objectTree", () => {

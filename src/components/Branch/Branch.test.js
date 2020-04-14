@@ -1,10 +1,12 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { v4 as uuidv4 } from "uuid";
+import "../../fontawesome";
 
 import Branch from "./Branch";
 import { UUIDV4_NAMESPACE } from "../../constants";
 
+// TODO: Refactor this test
 test("renders a Branch with 3 levels", () => {
   const objectBranch = {
     name: "yo",

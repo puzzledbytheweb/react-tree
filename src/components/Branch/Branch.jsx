@@ -8,7 +8,6 @@ import useOpen from "../../hooks/useOpen";
 
 import { FlexDiv } from "../Styled/Styled";
 
-import List from "../List/List";
 import ListCell from "../ListCell/ListCell";
 
 const Branch = ({
@@ -73,7 +72,7 @@ const Branch = ({
           {open ? <small>Collapse</small> : <small>Expand</small>}
         </Button>
       </div>
-      <List style={{ display: open ? "block" : "none" }}>
+      <ul style={{ display: open ? "block" : "none" }}>
         <FlexDiv>
           <ListCell
             name={name}
@@ -99,7 +98,7 @@ const Branch = ({
               onAddCellItem={handleAddCellItem}
             />
           ))}
-      </List>
+      </ul>
     </div>
   );
 };
