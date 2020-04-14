@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import { LevelItemInterface } from "../../types";
 
+import { FlexDiv, ButtonFit } from "../Styled/Styled";
+
 import AddCell from "../AddCell/AddCell";
 import EditCell from "../EditCell/EditCell";
 
@@ -25,12 +27,14 @@ const ListCell = ({
 
   return (
     <li>
-      <EditCell onEditCellName={handleEditSubmission} />
-      <h3>{name}</h3>
-      <button data-testid="removeButton" onClick={handleRemoveCell}>
-        Remove this Cell!!
-      </button>
-      <AddCell onAddCell={handleAddCell} />
+      <FlexDiv>
+        <h3>{name}</h3>
+        <EditCell onEditCellName={handleEditSubmission} />
+        <ButtonFit data-testid="removeButton" onClick={handleRemoveCell}>
+          Remove this Cell!!
+        </ButtonFit>
+        <AddCell onAddCell={handleAddCell} />
+      </FlexDiv>
       {items &&
         items.map((item) => (
           <div style={{ display: "flex" }} key={item.id}>

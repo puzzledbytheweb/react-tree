@@ -5,6 +5,8 @@ import { LevelInterface } from "../../types";
 
 import useOpen from "../../hooks/useOpen";
 
+import { FlexDiv, button } from "../Styled/Styled";
+
 import List from "../List/List";
 import ListCell from "../ListCell/ListCell";
 
@@ -65,18 +67,22 @@ const Branch = ({
 
   return (
     <>
-      <button onClick={toggleOpen}>Collapse!</button>
+      <button style={{ minHeight: 50 }} onClick={toggleOpen}>
+        Collapse!
+      </button>
       <List style={{ display: open ? "block" : "none" }}>
-        <ListCell
-          name={name}
-          items={items}
-          parentId={id}
-          onItemCheck={handleItemCheck}
-          onAddCell={handleAddCell}
-          onRemoveCell={handleRemoveCell}
-          onEditCellName={handleEditCellName}
-          onAddCellItem={handleAddCellItem}
-        />
+        <FlexDiv>
+          <ListCell
+            name={name}
+            items={items}
+            parentId={id}
+            onItemCheck={handleItemCheck}
+            onAddCell={handleAddCell}
+            onRemoveCell={handleRemoveCell}
+            onEditCellName={handleEditCellName}
+            onAddCellItem={handleAddCellItem}
+          />
+        </FlexDiv>
         {children &&
           children.map((individualChild) => (
             <Branch

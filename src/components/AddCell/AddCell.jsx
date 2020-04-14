@@ -1,6 +1,7 @@
 import React from "react";
-
 import PropTypes from "prop-types";
+
+import { ButtonFit } from "../Styled/Styled";
 
 import AddCellForm from "./AddCellForm";
 import useOpen from "../../hooks/useOpen";
@@ -18,7 +19,7 @@ const AddCell = ({ onAddCell }) => {
       <div style={{ display: open ? "initial" : "none" }}>
         <AddCellForm onSubmit={handleSubmission} />
       </div>
-      <button onClick={toggleOpen}>Add a new location!</button>
+      <ButtonFit onClick={toggleOpen}>Add a new location!</ButtonFit>
     </>
   );
 };

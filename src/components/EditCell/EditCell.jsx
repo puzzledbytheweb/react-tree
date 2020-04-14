@@ -1,6 +1,7 @@
 import React from "react";
-
 import PropTypes from "prop-types";
+
+import { ButtonFit } from "../Styled/Styled";
 
 import EditCellForm from "./EditCellForm";
 
@@ -19,7 +20,7 @@ const EditCellName = ({ onEditCellName }) => {
       <div style={{ display: open ? "initial" : "none" }}>
         <EditCellForm onSubmit={handleSubmission} />
       </div>
-      <button onClick={toggleOpen}>Edit Name!</button>
+      <ButtonFit onClick={toggleOpen}>Edit Name!</ButtonFit>
     </>
   );
 };
