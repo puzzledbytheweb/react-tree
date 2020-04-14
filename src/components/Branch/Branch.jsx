@@ -15,6 +15,7 @@ const Branch = ({
   onAddCell,
   onRemoveCell,
   onEditCellName,
+  onAddCellItem,
 }) => {
   const { open, toggleOpen } = useOpen(true);
   const { name, items, children, id } = objectBranch;
@@ -56,6 +57,12 @@ const Branch = ({
     onEditCellName(newPath, values);
   };
 
+  const handleAddCellItem = (path, values) => {
+    const newPath = createNewPath(path);
+
+    onAddCellItem(newPath, values);
+  };
+
   return (
     <>
       <button onClick={toggleOpen}>Collapse!</button>
@@ -68,6 +75,7 @@ const Branch = ({
           onAddCell={handleAddCell}
           onRemoveCell={handleRemoveCell}
           onEditCellName={handleEditCellName}
+          onAddCellItem={handleAddCellItem}
         />
         {children &&
           children.map((individualChild) => (
@@ -79,6 +87,7 @@ const Branch = ({
               onAddCell={handleAddCell}
               onRemoveCell={handleRemoveCell}
               onEditCellName={handleEditCellName}
+              onAddCellItem={handleAddCellItem}
             />
           ))}
       </List>

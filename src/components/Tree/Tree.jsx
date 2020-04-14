@@ -14,6 +14,7 @@ const Tree = ({ initialTree }) => {
     handleCellAdd,
     handleCellRemove,
     handleEditCellName,
+    handleAddCellItem,
   } = useTree(initialTree);
 
   const onEditCellName = (path, values) => {
@@ -32,6 +33,7 @@ const Tree = ({ initialTree }) => {
             onAddCell={handleCellAdd}
             onRemoveCell={handleCellRemove}
             onEditCellName={onEditCellName}
+            onAddCellItem={handleAddCellItem}
           />
         );
       })}

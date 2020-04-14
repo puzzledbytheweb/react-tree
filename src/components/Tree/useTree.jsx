@@ -59,7 +59,17 @@ const useTree = (initialTree) => {
     setTree(newTree);
   };
 
-  const handleAddCellItem = (path, item) => {};
+  const handleAddCellItem = (path, newItem) => {
+    const newTree = [...tree];
+
+    let currentParentNode = findTreeNode(newTree, path);
+
+    if (!currentParentNode.items) currentParentNode.items = [];
+
+    currentParentNode.items.push(newItem);
+
+    setTree(newTree);
+  };
 
   return {
     tree,
@@ -92,7 +102,6 @@ const findTreeNode = (tree, path) => {
   return currentParentNode;
 };
 
-// TODO: This has bugs please solve fast!!
 const deleteTreeNode = (tree, path) => {
   const splittedPath = path.split("|").reverse();
 
