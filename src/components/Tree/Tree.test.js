@@ -82,3 +82,25 @@ test("Removes a node from the tree", () => {
 
   expect(yoYo).toBeFalsy();
 });
+
+test("Adds a new item to a node", () => {
+  const { queryByText, getByText } = render(<Tree initialTree={initialTree} />);
+
+  const yoYo = getByText("yo").parentElement;
+  const yoYoNewItemName = "newItemFromYoYo";
+
+  const addNewNodeItemFormYoYo = within(yoYo).getByTestId("addNodeItemForm");
+  const addNewNodeFormInputYoYo = addNewNodeItemFormYoYo.querySelector(
+    'input[name="name"]'
+  );
+
+  expect(queryByText(yoYoNewItemName)).toBeFalsy();
+
+  fireEvent.change(addNewNodeFormInputYoYo, {
+    target: { value: yoYoNewItemName },
+  });
+
+  fireEvent.submit(addNewNodeItemFormYoYo);
+
+  expect(queryByText(yoYoNewItemName)).toBeTruthy();
+});
