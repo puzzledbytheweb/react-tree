@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { v4 as uuidv4 } from "uuid";
-import { UUIDV4_NAMESPACE } from "../../constants";
+import { UUIDV4_NAMESPACE } from "../constants";
 
 const useTree = (initialTree) => {
   const [tree, setTree] = useState(initialTree);

@@ -3,7 +3,7 @@ import Proptypes from "prop-types";
 
 import { LevelInterface } from "../../types";
 
-import useTree from "./useTree";
+import useTree from "../../hooks/useTree";
 
 import Branch from "../Branch/Branch";
 
