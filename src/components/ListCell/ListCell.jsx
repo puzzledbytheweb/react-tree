@@ -1,14 +1,31 @@
 import React from "react";
 import PropTypes from "prop-types";
+import styled from "styled-components";
+import { Button, ListGroup, ListGroupItem } from "reactstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { LevelItemInterface } from "../../types";
 
-import { FlexDiv, ButtonFit } from "../Styled/Styled";
-
+import { FlexDiv } from "../Styled/Styled";
 import AddCell from "../AddCell/AddCell";
 import EditCell from "../EditCell/EditCell";
 
 import AddCellItem from "../AddCellItem/AddCellItem";
+
+const TitleAndButtonsDiv = styled(FlexDiv)`
+  margin-bottom: 10px;
+
+  & button {
+    margin-right: 8px;
+  }
+`;
+
+const ListItem = styled.li`
+  border: 1px solid white;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 10px;
+`;
 
 const ListCell = ({
   name,
@@ -26,28 +43,40 @@ const ListCell = ({
   const handleRemoveCell = () => onRemoveCell(parentId);
 
   return (
-    <li>
-      <FlexDiv>
-        <h3>{name}</h3>
+    <ListItem>
+      <TitleAndButtonsDiv>
+        <h4 style={{ marginRight: 8 }}>{name}</h4>
         <EditCell onEditCellName={handleEditSubmission} />
-        <ButtonFit data-testid="removeButton" onClick={handleRemoveCell}>
-          Remove this Cell!!
-        </ButtonFit>
+        <Button
+          size="xs"
+          color="danger"
+          data-testid="removeButton"
+          onClick={handleRemoveCell}
+        >
+          <FontAwesomeIcon size="xs" icon="trash-alt" />
+        </Button>
         <AddCell onAddCell={handleAddCell} />
-      </FlexDiv>
-      {items &&
-        items.map((item) => (
-          <div style={{ display: "flex" }} key={item.id}>
-            <p>{item.name}</p>
-            <input
-              onChange={() => onItemCheck(item, parentId)}
-              checked={item.checked}
-              type="checkbox"
-            />
-          </div>
-        ))}
-      <AddCellItem onAddCellItem={handleAddCellItem} />
-    </li>
+      </TitleAndButtonsDiv>
+      <ListGroup>
+        {items &&
+          items.map((item) => (
+            <ListGroupItem
+              style={{ display: "flex", alignItems: "center", padding: "5px" }}
+              key={item.id}
+            >
+              <small style={{ color: "black", marginRight: 8 }}>
+                {item.name}
+              </small>
+              <input
+                onChange={() => onItemCheck(item, parentId)}
+                checked={item.checked}
+                type="checkbox"
+              />
+            </ListGroupItem>
+          ))}
+        <AddCellItem onAddCellItem={handleAddCellItem} />
+      </ListGroup>
+    </ListItem>
   );
 };
 

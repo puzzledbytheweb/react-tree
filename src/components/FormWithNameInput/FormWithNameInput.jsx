@@ -13,18 +13,14 @@ const StyledForm = styled(Form)`
   display: flex;
 `;
 
-const AddCellForm = ({ onSubmit }) => {
+const FormWithNameInput = ({ onSubmit, initialValues }) => {
   const { values, handleChange, handleSubmit } = useForm(
-    {
-      name: "",
-      id: uuidv4(UUIDV4_NAMESPACE),
-      children: null,
-    },
+    initialValues,
     onSubmit
   );
 
   return (
-    <StyledForm data-testid="addNodeForm" onSubmit={handleSubmit}>
+    <StyledForm onSubmit={handleSubmit}>
       <Input
         onChange={(e) => handleChange(e)}
         name="name"
@@ -38,8 +34,9 @@ const AddCellForm = ({ onSubmit }) => {
   );
 };
 
-AddCellForm.propTypes = {
+FormWithNameInput.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.object.isRequired,
 };
 
-export default AddCellForm;
+export default FormWithNameInput;

@@ -1,29 +1,20 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import useForm from "../../hooks/useForm";
+import FormWithNameInput from "../FormWithNameInput/FormWithNameInput";
 
-const AddCellForm = ({ onSubmit }) => {
-  const { values, handleChange, handleSubmit } = useForm(
-    { name: "" },
-    onSubmit
-  );
-
+const EditCellForm = ({ onSubmit }) => {
   return (
-    <form data-testid="editNodeForm" onSubmit={handleSubmit}>
-      <input
-        onChange={(e) => handleChange(e)}
-        name="name"
-        value={values.name}
-        placeholder="New Name"
-      />
-      <button type="submit">Edit!</button>
-    </form>
+    <FormWithNameInput
+      data-testid="editNodeForm"
+      onSubmit={onSubmit}
+      initialValues={{ name: "" }}
+    />
   );
 };
 
-AddCellForm.propTypes = {
+EditCellForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
 
-export default AddCellForm;
+export default EditCellForm;

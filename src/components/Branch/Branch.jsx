@@ -1,11 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Button } from "reactstrap";
 
 import { LevelInterface } from "../../types";
 
 import useOpen from "../../hooks/useOpen";
 
-import { FlexDiv, button } from "../Styled/Styled";
+import { FlexDiv } from "../Styled/Styled";
 
 import List from "../List/List";
 import ListCell from "../ListCell/ListCell";
@@ -66,10 +67,12 @@ const Branch = ({
   };
 
   return (
-    <>
-      <button style={{ minHeight: 50 }} onClick={toggleOpen}>
-        Collapse!
-      </button>
+    <div style={{ padding: 10 }}>
+      <div style={{ width: "100%", textAlign: "left" }}>
+        <Button size="xs" onClick={toggleOpen}>
+          {open ? <small>Collapse</small> : <small>Expand</small>}
+        </Button>
+      </div>
       <List style={{ display: open ? "block" : "none" }}>
         <FlexDiv>
           <ListCell
@@ -97,7 +100,7 @@ const Branch = ({
             />
           ))}
       </List>
-    </>
+    </div>
   );
 };
 

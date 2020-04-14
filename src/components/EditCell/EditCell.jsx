@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-
-import { ButtonFit } from "../Styled/Styled";
+import { Button } from "reactstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import EditCellForm from "./EditCellForm";
 
@@ -20,7 +20,9 @@ const EditCellName = ({ onEditCellName }) => {
       <div style={{ display: open ? "initial" : "none" }}>
         <EditCellForm onSubmit={handleSubmission} />
       </div>
-      <ButtonFit onClick={toggleOpen}>Edit Name!</ButtonFit>
+      <Button color="warning" size="xs" onClick={toggleOpen}>
+        <FontAwesomeIcon size="xs" icon="pencil-alt" />
+      </Button>
     </>
   );
 };

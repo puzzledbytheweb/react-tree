@@ -15,6 +15,7 @@ const useForm = (initialValues, onSubmit) => {
     e.preventDefault();
 
     onSubmit(values);
+    setValues(initialValues);
   };
 
   return {
