@@ -96,7 +96,9 @@ const deleteTreeNode = (tree, path) => {
 
       // We're checking if nextParentNode has children, if it doesn't it means we are on a leaf
       // So we maintain the currentParentNode se we delete via its children
-      if (nextParentNode.children) {
+      // We're also checking if we are on the node we want to delete, so we don't end up just
+      // deleting a child
+      if (nextParentNode.children && i !== splittedPath.length - 1) {
         currentParentNode = nextParentNode.children.length
           ? nextParentNode
           : currentParentNode;
