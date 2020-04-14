@@ -5,9 +5,7 @@ import AddCell from "./AddCell";
 test("Displays form to add node", () => {
   const onAddCellMock = jest.fn();
 
-  const { getByRole, queryByRole } = render(
-    <AddCell onAddCell={onAddCellMock} />
-  );
+  const { getByRole } = render(<AddCell onAddCell={onAddCellMock} />);
 
   const button = getByRole("button");
   const divContainingForm = button.previousSibling;

@@ -27,7 +27,7 @@ const AddCellForm = ({ onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form data-testid="addNodeForm" onSubmit={handleSubmit}>
       <input
         onChange={(e) => handleChange(e)}
         name="name"

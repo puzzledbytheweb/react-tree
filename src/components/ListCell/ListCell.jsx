@@ -19,7 +19,9 @@ const ListCell = ({
   return (
     <li>
       <h3>{name}</h3>
-      <button onClick={handleRemoveCell}>Remove this Cell!!</button>
+      <button data-testid="removeButton" onClick={handleRemoveCell}>
+        Remove this Cell!!
+      </button>
       <AddCell onAddCell={handleAddCell} />
       {items &&
         items.map((item) => (

@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, within } from "@testing-library/react";
 
 import initialTree from "../../mocks/initialTree";
 
@@ -7,7 +7,8 @@ import useTree from "./useTree";
 import Tree from "./Tree";
 
 test("Does typechecking on objectTree", () => {
-  const stub = jest.spyOn(console, "error");
+  // We're preventing console to be poluted with console error calls
+  const stub = jest.spyOn(console, "error").mockImplementation(() => {});
 
   render(<Tree initialTree={initialTree} />);
 
@@ -47,9 +48,37 @@ test("Checks an item in any branch of the tree", () => {
 });
 
 test("Adds a new node to the tree", () => {
-  const { getByText } = render(<Tree initialTree={initialTree} />);
+  const { queryByText, getByText } = render(<Tree initialTree={initialTree} />);
 
-  const yoYo = getByText("yo.yo");
+  const yoYo = getByText("yo.yo").parentElement;
+  const yoYoChildName = "newChildFromYoYo";
 
-  console.log(yoYo);
+  const addNewNodeFormYoYo = within(yoYo).getByTestId("addNodeForm");
+  const addNewNodeFormInputYoYo = addNewNodeFormYoYo.querySelector(
+    'input[name="name"]'
+  );
+
+  expect(queryByText(yoYoChildName)).toBeFalsy();
+
+  fireEvent.change(addNewNodeFormInputYoYo, {
+    target: { value: yoYoChildName },
+  });
+  fireEvent.submit(addNewNodeFormYoYo);
+
+  expect(queryByText(yoYoChildName)).toBeTruthy();
+});
+
+test("Removes a node from the tree", () => {
+  const { queryByText } = render(<Tree initialTree={initialTree} />);
+
+  let yoYo = queryByText("yo.yo").parentElement;
+
+  expect(yoYo).toBeTruthy();
+  const removeButton = within(yoYo).getByTestId("removeButton");
+
+  fireEvent.click(removeButton);
+
+  yoYo = queryByText("yo.yo");
+
+  expect(yoYo).toBeFalsy();
 });

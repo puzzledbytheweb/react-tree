@@ -9,7 +9,6 @@ const useTree = (initialTree) => {
   const handleCellRemove = (path) => {
     let newTree = [...tree];
 
-    console.log(path);
     // eslint-disable-next-line no-unused-vars
     newTree = deleteTreeNode(newTree, path);
 
