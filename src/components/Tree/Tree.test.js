@@ -2,6 +2,8 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 
 import initialTree from "../../mocks/initialTree";
+
+import useTree from "./useTree";
 import Tree from "./Tree";
 
 test("Does typechecking on objectTree", () => {
@@ -44,7 +46,7 @@ test("Checks an item in any branch of the tree", () => {
   expect(item3Checkbox.checked).toBe(true);
 });
 
-test("Adds a new cell to the tree", () => {
+test("Adds a new node to the tree", () => {
   const { getByText } = render(<Tree initialTree={initialTree} />);
 
   const yoYo = getByText("yo.yo");
