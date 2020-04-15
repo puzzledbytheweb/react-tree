@@ -19,15 +19,23 @@ const useTree = (initialTree) => {
 
     let currentParentNode = findTreeNode(newTree, path);
 
-    // Creating children if it doesn't already exist
-    if (!currentParentNode.children) currentParentNode.children = [];
-
-    currentParentNode.children.unshift({
+    const newNode = {
       name: values.name,
       id: uuidv4(UUIDV4_NAMESPACE),
       items: null,
       children: [],
-    });
+    };
+
+    console.log(currentParentNode);
+    // This means we are creating a new root
+    if (!currentParentNode) {
+      newTree.unshift(newNode);
+    } else {
+      // Checking if it has children
+      if (!currentParentNode.children) currentParentNode.children = [];
+
+      currentParentNode.children.unshift(newNode);
+    }
 
     setTree(newTree);
   };
@@ -76,15 +84,19 @@ const useTree = (initialTree) => {
     handleCellRemove,
     handleEditCellName,
     handleAddCellItem,
+    setTree,
   };
 };
 
 export default useTree;
 
 const findTreeNode = (tree, path) => {
-  const splittedPath = path.split("|").reverse();
-
   let currentParentNode = null;
+
+  console.log(path);
+  if (!path) return currentParentNode;
+
+  const splittedPath = path.split("|").reverse();
 
   // Finding the tree
   for (let i = 0; i < splittedPath.length; i++) {

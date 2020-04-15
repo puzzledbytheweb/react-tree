@@ -10,7 +10,7 @@ import useOpen from "../../hooks/useOpen";
 
 import FormWithNameInput from "../FormWithNameInput/FormWithNameInput";
 
-const AddCell = ({ onAddCell }) => {
+const AddCell = ({ onAddCell, buttonText }) => {
   const { open, toggleOpen } = useOpen(false);
 
   const handleSubmission = (values) => {
@@ -32,13 +32,18 @@ const AddCell = ({ onAddCell }) => {
         />
       </div>
       <Button size="xs" outline color="success" onClick={toggleOpen}>
-        <FontAwesomeIcon size="xs" icon="plus-circle" />
+        {buttonText ? (
+          buttonText
+        ) : (
+          <FontAwesomeIcon size="xs" icon="plus-circle" />
+        )}
       </Button>
     </>
   );
 };
 AddCell.propTypes = {
   onAddCell: PropTypes.func.isRequired,
+  buttonText: PropTypes.oneOf(PropTypes.element, PropTypes.string),
 };
 
 export default AddCell;
