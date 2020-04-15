@@ -26,7 +26,6 @@ const useTree = (initialTree) => {
       children: [],
     };
 
-    console.log(currentParentNode);
     // This means we are creating a new root
     if (!currentParentNode) {
       newTree.unshift(newNode);
@@ -93,7 +92,6 @@ export default useTree;
 const findTreeNode = (tree, path) => {
   let currentParentNode = null;
 
-  console.log(path);
   if (!path) return currentParentNode;
 
   const splittedPath = path.split("|").reverse();

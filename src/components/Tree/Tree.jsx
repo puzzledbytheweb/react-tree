@@ -1,13 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Button } from "reactstrap";
 
 import { LevelInterface } from "../../types";
 
 import useTree from "../../hooks/useTree";
+import { createNewEmptyNode } from "../../utils";
 
 import Branch from "../Branch/Branch";
-
-import AddCell from "../AddCell/AddCell";
+import ButtonWithForm from "../ButtonWithForm/ButtonWithForm";
 
 const Tree = ({ initialTree = null }) => {
   const {
@@ -33,12 +34,30 @@ const Tree = ({ initialTree = null }) => {
   };
 
   if (!tree || tree.length === 0)
-    return <AddCell onAddCell={handleAddNewTree} />;
+    return (
+      <ButtonWithForm
+        formInitialValues={createNewEmptyNode()}
+        onSubmit={handleAddNewTree}
+        button={
+          <Button size="xs" outline color="success">
+            Start a new Tree!
+          </Button>
+        }
+      />
+    );
 
   // Create a branch for each root
   return (
     <div>
-      <AddCell onAddCell={handleAddNewRoot} buttonText="Add a new Root" />
+      <ButtonWithForm
+        formInitialValues={createNewEmptyNode()}
+        onSubmit={handleAddNewRoot}
+        button={
+          <Button size="xs" outline color="success">
+            Add a new Root!
+          </Button>
+        }
+      />
       {tree.map((branch) => {
         return (
           <Branch

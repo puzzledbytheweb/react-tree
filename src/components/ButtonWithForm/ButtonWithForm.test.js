@@ -1,12 +1,20 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
-import AddCell from "./AddCell";
+import ButtonWithForm from "./ButtonWithForm";
 import "../../fontawesome";
 
-test("Displays form to add node", () => {
-  const onAddCellMock = jest.fn();
+test("Displays form after clicking button", () => {
+  const onSubmitMock = jest.fn();
 
-  const { getByRole } = render(<AddCell onAddCell={onAddCellMock} />);
+  const { getByRole } = render(
+    <ButtonWithForm
+      formInitialValues={{
+        name: "",
+      }}
+      onSubmit={onSubmitMock}
+      button={<button>Add a new Root!</button>}
+    />
+  );
 
   const button = getByRole("button");
   const divContainingForm = button.previousSibling;

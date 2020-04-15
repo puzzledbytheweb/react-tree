@@ -5,12 +5,10 @@ import { Button, ListGroup, ListGroupItem } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { LevelItemInterface } from "../../types";
+import { createNewEmptyNode, createNewEmptyNodeItem } from "../../utils";
 
 import { FlexDiv } from "../Styled/Styled";
-import AddCell from "../AddCell/AddCell";
-import EditCell from "../EditCell/EditCell";
-
-import AddCellItem from "../AddCellItem/AddCellItem";
+import ButtonWithForm from "../ButtonWithForm/ButtonWithForm";
 
 const TitleAndButtonsDiv = styled(FlexDiv)`
   margin-bottom: 10px;
@@ -46,7 +44,16 @@ const ListCell = ({
     <ListItem>
       <TitleAndButtonsDiv>
         <h4 style={{ marginRight: 8 }}>{name}</h4>
-        <EditCell onEditCellName={handleEditSubmission} />
+        <ButtonWithForm
+          data-testid="editNodeForm"
+          formInitialValues={{ name: "" }}
+          onSubmit={handleEditSubmission}
+          button={
+            <Button color="warning" size="xs">
+              <FontAwesomeIcon size="xs" icon="pencil-alt" />
+            </Button>
+          }
+        />
         <Button
           size="xs"
           color="danger"
@@ -55,7 +62,15 @@ const ListCell = ({
         >
           <FontAwesomeIcon size="xs" icon="trash-alt" />
         </Button>
-        <AddCell onAddCell={handleAddCell} />
+        <ButtonWithForm
+          formInitialValues={createNewEmptyNode()}
+          onSubmit={handleAddCell}
+          button={
+            <Button size="xs" outline color="success">
+              <FontAwesomeIcon size="xs" icon="plus-circle" />
+            </Button>
+          }
+        />
       </TitleAndButtonsDiv>
       <ListGroup>
         {items &&
@@ -74,7 +89,16 @@ const ListCell = ({
               />
             </ListGroupItem>
           ))}
-        <AddCellItem onAddCellItem={handleAddCellItem} />
+        <ButtonWithForm
+          data-testid="editNodeForm"
+          formInitialValues={createNewEmptyNodeItem()}
+          onSubmit={handleAddCellItem}
+          button={
+            <Button size="xs" color="primary">
+              <small>Add Property</small>
+            </Button>
+          }
+        />
       </ListGroup>
     </ListItem>
   );
