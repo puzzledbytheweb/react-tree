@@ -17,12 +17,15 @@ const useTree = (initialTree) => {
   const handleCellAdd = (path, values) => {
     const newTree = [...tree];
 
+    // console.log(path);
+
     let currentParentNode = findTreeNode(newTree, path);
 
     const newNode = {
       name: values.name,
       id: uuidv4(UUIDV4_NAMESPACE),
       items: null,
+      nodePath: path,
       children: [],
     };
 
@@ -76,6 +79,11 @@ const useTree = (initialTree) => {
     setTree(newTree);
   };
 
+  const handleDragItem = (source, destination) => {
+    const newTree = [...tree];
+    const sourceCurrentParentNode = findTreeNode(newTree, source.droppableId);
+  };
+
   return {
     tree,
     handleItemCheck,
@@ -83,6 +91,7 @@ const useTree = (initialTree) => {
     handleCellRemove,
     handleEditCellName,
     handleAddCellItem,
+    handleDragItem,
     setTree,
   };
 };

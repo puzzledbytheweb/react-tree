@@ -3,9 +3,6 @@ import PropTypes from "prop-types";
 import { Button, Form, Input } from "reactstrap";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { v4 as uuidv4 } from "uuid";
-
-import { UUIDV4_NAMESPACE } from "../../constants";
 
 import useForm from "../../hooks/useForm";
 

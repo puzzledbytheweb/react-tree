@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
+
 import PropTypes from "prop-types";
 import { Button } from "reactstrap";
 import { Droppable } from "react-beautiful-dnd";
@@ -19,9 +20,10 @@ const Branch = ({
   onRemoveCell,
   onEditCellName,
   onAddCellItem,
+  index,
 }) => {
   const { open, toggleOpen } = useOpen(true);
-  const { name, items, children, id } = objectBranch;
+  const { name, items, children, id, nodePath } = objectBranch;
 
   const createNewPath = (path) => {
     let newPath = path || "";
@@ -74,12 +76,15 @@ const Branch = ({
         </Button>
       </div>
       <ul style={{ display: open ? "block" : "none" }}>
-        <Droppable droppableId={id}>
+        {/* We 're using the createNewPath function so that we can easily find the dropped
+        component in the Tree component */}
+        <Droppable key={id} droppableId={nodePath || id}>
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {provided.placeholder}
               <FlexDiv>
                 <ListCell
+                  index={index}
                   name={name}
                   items={items}
                   parentId={id}
@@ -91,9 +96,10 @@ const Branch = ({
                 />
               </FlexDiv>
               {children &&
-                children.map((individualChild) => (
+                children.map((individualChild, childIndex) => (
                   <Branch
                     key={individualChild.id}
+                    index={childIndex}
                     objectBranch={individualChild}
                     parentId={id}
                     onItemCheck={handleItemCheck}
@@ -118,6 +124,7 @@ Branch.propTypes = {
   onRemoveCell: PropTypes.func.isRequired,
   onEditCellName: PropTypes.func.isRequired,
   parentId: PropTypes.string || null,
+  index: PropTypes.number.isRequired,
 };
 
 export default Branch;

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Button, ListGroup, ListGroupItem } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Draggable } from "react-beautiful-dnd";
 
 import { LevelItemInterface } from "../../types";
 import { createNewEmptyNode, createNewEmptyNodeItem } from "../../utils";
@@ -34,6 +35,7 @@ const ListCell = ({
   onEditCellName,
   onAddCellItem,
   parentId,
+  index,
 }) => {
   const handleAddCell = (values) => onAddCell(parentId, values);
   const handleEditSubmission = (values) => onEditCellName(parentId, values);
@@ -41,70 +43,78 @@ const ListCell = ({
   const handleRemoveCell = () => onRemoveCell(parentId);
 
   return (
-    <ListItem>
-      <TitleAndButtonsDiv>
-        <h4 style={{ marginRight: 8 }}>{name}</h4>
-        <ButtonWithForm
-          data-testid="editNodeForm"
-          formInitialValues={{ name: "" }}
-          onSubmit={handleEditSubmission}
-          button={
-            <Button color="warning" size="xs">
-              <FontAwesomeIcon size="xs" icon="pencil-alt" />
-            </Button>
-          }
-        />
-        <Button
-          size="xs"
-          color="danger"
-          data-testid="removeButton"
-          onClick={handleRemoveCell}
+    <Draggable draggableId={parentId} index={index}>
+      {(provided) => (
+        <ListItem
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
         >
-          <FontAwesomeIcon size="xs" icon="trash-alt" />
-        </Button>
-        <ButtonWithForm
-          formInitialValues={createNewEmptyNode()}
-          onSubmit={handleAddCell}
-          button={
-            <Button size="xs" outline color="success">
-              <FontAwesomeIcon size="xs" icon="plus-circle" />
-            </Button>
-          }
-        />
-      </TitleAndButtonsDiv>
-      <ListGroup>
-        {items &&
-          items.map((item) => (
-            <ListGroupItem
-              style={{
-                display: "flex",
-                alignItems: "center",
-                padding: "5px",
-              }}
-              key={item.id}
+          <TitleAndButtonsDiv>
+            <h4 style={{ marginRight: 8 }}>{name}</h4>
+            <ButtonWithForm
+              data-testid="editNodeForm"
+              formInitialValues={{ name: "" }}
+              onSubmit={handleEditSubmission}
+              button={
+                <Button color="warning" size="xs">
+                  <FontAwesomeIcon size="xs" icon="pencil-alt" />
+                </Button>
+              }
+            />
+            <Button
+              size="xs"
+              color="danger"
+              data-testid="removeButton"
+              onClick={handleRemoveCell}
             >
-              <small style={{ color: "black", marginRight: 8 }}>
-                {item.name}
-              </small>
-              <input
-                onChange={() => onItemCheck(item, parentId)}
-                checked={item.checked}
-                type="checkbox"
-              />
-            </ListGroupItem>
-          ))}
-        <ButtonWithForm
-          data-testid="editNodeForm"
-          formInitialValues={createNewEmptyNodeItem()}
-          onSubmit={handleAddCellItem}
-          button={
-            <Button size="xs" color="primary">
-              <small>Add Property</small>
+              <FontAwesomeIcon size="xs" icon="trash-alt" />
             </Button>
-          }
-        />
-      </ListGroup>
-    </ListItem>
+            <ButtonWithForm
+              formInitialValues={createNewEmptyNode()}
+              onSubmit={handleAddCell}
+              button={
+                <Button size="xs" outline color="success">
+                  <FontAwesomeIcon size="xs" icon="plus-circle" />
+                </Button>
+              }
+            />
+          </TitleAndButtonsDiv>
+          <ListGroup>
+            {items &&
+              items.map((item) => (
+                <ListGroupItem
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "5px",
+                  }}
+                  key={item.id}
+                >
+                  <small style={{ color: "black", marginRight: 8 }}>
+                    {item.name}
+                  </small>
+                  <input
+                    onChange={() => onItemCheck(item, parentId)}
+                    checked={item.checked}
+                    type="checkbox"
+                  />
+                </ListGroupItem>
+              ))}
+            <ButtonWithForm
+              data-testid="editNodeForm"
+              formInitialValues={createNewEmptyNodeItem()}
+              onSubmit={handleAddCellItem}
+              button={
+                <Button size="xs" color="primary">
+                  <small>Add Property</small>
+                </Button>
+              }
+            />
+          </ListGroup>
+        </ListItem>
+      )}
+    </Draggable>
   );
 };
 
@@ -117,6 +127,7 @@ ListCell.propTypes = {
   onEditCellName: PropTypes.func.isRequired,
   onAddCellItem: PropTypes.func.isRequired,
   parentId: PropTypes.string,
+  index: PropTypes.number.isRequired,
 };
 
 export default ListCell;

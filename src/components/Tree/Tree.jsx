@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Button } from "reactstrap";
-import { DragDropContext } from "react-beautiful-dnd";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 import { LevelInterface } from "../../types";
 
@@ -19,6 +19,7 @@ const Tree = ({ initialTree = null }) => {
     handleCellRemove,
     handleEditCellName,
     handleAddCellItem,
+    handleDragItem,
     setTree,
   } = useTree(initialTree);
 
@@ -34,8 +35,17 @@ const Tree = ({ initialTree = null }) => {
     handleCellAdd(null, values);
   };
 
-  const handleDragEnd = (result) => {
-    console.log(result);
+  const handleDragEnd = ({ source, destination }) => {
+    if (!destination) return;
+
+    // Check if we are not dropping component in the same place
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    )
+      return;
+
+    handleDragItem(source, destination);
   };
 
   if (!tree || tree.length === 0)
@@ -64,17 +74,25 @@ const Tree = ({ initialTree = null }) => {
         }
       />
       <DragDropContext onDragEnd={handleDragEnd}>
-        {tree.map((branch) => {
+        {tree.map((branch, index) => {
           return (
-            <Branch
-              key={branch.id}
-              objectBranch={branch}
-              onItemCheck={handleItemCheck}
-              onAddCell={handleCellAdd}
-              onRemoveCell={handleCellRemove}
-              onEditCellName={onEditCellName}
-              onAddCellItem={handleAddCellItem}
-            />
+            <Droppable key={branch.id} droppableId={branch.id}>
+              {(provided) => (
+                <div ref={provided.innerRef}>
+                  {provided.placeholder}
+                  <Branch
+                    {...provided.droppableProps}
+                    objectBranch={branch}
+                    onItemCheck={handleItemCheck}
+                    onAddCell={handleCellAdd}
+                    onRemoveCell={handleCellRemove}
+                    onEditCellName={onEditCellName}
+                    onAddCellItem={handleAddCellItem}
+                    index={index}
+                  />
+                </div>
+              )}
+            </Droppable>
           );
         })}
       </DragDropContext>
