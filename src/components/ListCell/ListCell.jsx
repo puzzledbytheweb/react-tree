@@ -76,7 +76,11 @@ const ListCell = ({
         {items &&
           items.map((item) => (
             <ListGroupItem
-              style={{ display: "flex", alignItems: "center", padding: "5px" }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                padding: "5px",
+              }}
               key={item.id}
             >
               <small style={{ color: "black", marginRight: 8 }}>
