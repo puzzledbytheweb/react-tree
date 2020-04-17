@@ -77,7 +77,6 @@ const Branch = ({
         </Button>
       </div>
       <Ul style={{ display: open ? "block" : "none" }}>
-        {console.log(nodePath)}
         <Droppable key={id} droppableId={nodePath || id}>
           {(provided) => (
             <FlexDiv {...provided.droppableProps} ref={provided.innerRef}>

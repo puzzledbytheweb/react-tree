@@ -43,6 +43,9 @@ const Tree = ({ initialTree = null }) => {
     )
       return;
 
+    console.log("source", source);
+    console.log("destination", destination);
+
     handleDragItem(source, destination);
   };
 
@@ -74,23 +77,24 @@ const Tree = ({ initialTree = null }) => {
       <DragDropContext onDragEnd={handleDragEnd}>
         {tree.map((branch, index) => {
           return (
-            <Droppable key={branch.id} droppableId={branch.id}>
-              {(provided) => (
-                <div ref={provided.innerRef}>
-                  {provided.placeholder}
-                  <Branch
-                    {...provided.droppableProps}
-                    objectBranch={branch}
-                    onItemCheck={handleItemCheck}
-                    onAddCell={handleCellAdd}
-                    onRemoveCell={handleCellRemove}
-                    onEditCellName={onEditCellName}
-                    onAddCellItem={handleAddCellItem}
-                    index={index}
-                  />
-                </div>
-              )}
-            </Droppable>
+            // <Droppable key={branch.id} droppableId={branch.id}>
+            //   {(provided) => (
+            //     <div ref={provided.innerRef}>
+            //       {provided.placeholder}
+            <Branch
+              // {...provided.droppableProps}
+              key={branch.id}
+              objectBranch={branch}
+              onItemCheck={handleItemCheck}
+              onAddCell={handleCellAdd}
+              onRemoveCell={handleCellRemove}
+              onEditCellName={onEditCellName}
+              onAddCellItem={handleAddCellItem}
+              index={index}
+            />
+            //     </div>
+            //   )}
+            // </Droppable>
           );
         })}
       </DragDropContext>
