@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Button } from "reactstrap";
+import { Droppable } from "react-beautiful-dnd";
 
 import { LevelInterface } from "../../types";
 
@@ -73,31 +74,38 @@ const Branch = ({
         </Button>
       </div>
       <ul style={{ display: open ? "block" : "none" }}>
-        <FlexDiv>
-          <ListCell
-            name={name}
-            items={items}
-            parentId={id}
-            onItemCheck={handleItemCheck}
-            onAddCell={handleAddCell}
-            onRemoveCell={handleRemoveCell}
-            onEditCellName={handleEditCellName}
-            onAddCellItem={handleAddCellItem}
-          />
-        </FlexDiv>
-        {children &&
-          children.map((individualChild) => (
-            <Branch
-              key={individualChild.id}
-              objectBranch={individualChild}
-              parentId={id}
-              onItemCheck={handleItemCheck}
-              onAddCell={handleAddCell}
-              onRemoveCell={handleRemoveCell}
-              onEditCellName={handleEditCellName}
-              onAddCellItem={handleAddCellItem}
-            />
-          ))}
+        <Droppable droppableId={id}>
+          {(provided) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {provided.placeholder}
+              <FlexDiv>
+                <ListCell
+                  name={name}
+                  items={items}
+                  parentId={id}
+                  onItemCheck={handleItemCheck}
+                  onAddCell={handleAddCell}
+                  onRemoveCell={handleRemoveCell}
+                  onEditCellName={handleEditCellName}
+                  onAddCellItem={handleAddCellItem}
+                />
+              </FlexDiv>
+              {children &&
+                children.map((individualChild) => (
+                  <Branch
+                    key={individualChild.id}
+                    objectBranch={individualChild}
+                    parentId={id}
+                    onItemCheck={handleItemCheck}
+                    onAddCell={handleAddCell}
+                    onRemoveCell={handleRemoveCell}
+                    onEditCellName={handleEditCellName}
+                    onAddCellItem={handleAddCellItem}
+                  />
+                ))}
+            </div>
+          )}
+        </Droppable>
       </ul>
     </div>
   );
