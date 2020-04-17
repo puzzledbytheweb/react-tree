@@ -20,16 +20,14 @@ const Tree = ({ initialTree = null }) => {
     handleEditCellName,
     handleAddCellItem,
     handleDragItem,
-    setTree,
+    handleNewTree,
   } = useTree(initialTree);
 
   const onEditCellName = (path, values) => {
     handleEditCellName(path, values.name);
   };
 
-  const handleAddNewTree = (values) => {
-    setTree([values]);
-  };
+  const handleAddNewTree = (values) => handleNewTree(values);
 
   const handleAddNewRoot = (values) => {
     handleCellAdd(null, values);

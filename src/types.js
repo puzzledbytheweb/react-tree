@@ -11,6 +11,7 @@ export const LevelInterface = PropTypes.shape({
   name: PropTypes.string.isRequired,
   // ID should be unique, use
   id: PropTypes.string.isRequired,
+  // This is generated when we add a new node (we need it for the drag and drop feature)
   nodePath: PropTypes.string,
   items: PropTypes.arrayOf(LevelItemInterface),
   children: PropTypes.arrayOf(PropTypes.shape(this)),

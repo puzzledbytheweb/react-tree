@@ -4,6 +4,6 @@ export const FlexDiv = styled.div`
   display: flex;
 `;
 
-export const ButtonFit = styled.button`
-  height: 100%;
+export const Ul = styled.ul`
+  list-style: none;
 `;

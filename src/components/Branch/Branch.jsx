@@ -1,14 +1,15 @@
-import React, { useRef, useEffect } from "react";
+import React from "react";
 
 import PropTypes from "prop-types";
 import { Button } from "reactstrap";
 import { Droppable } from "react-beautiful-dnd";
 
 import { LevelInterface } from "../../types";
+import { PATH_SEPARATOR } from "../../constants";
 
 import useOpen from "../../hooks/useOpen";
 
-import { FlexDiv } from "../Styled/Styled";
+import { FlexDiv, Ul } from "../Styled/Styled";
 
 import ListCell from "../ListCell/ListCell";
 
@@ -32,7 +33,7 @@ const Branch = ({
     // We are creating a path of ids here, so that when we need to
     // traverse the branch we know where to go
     if (parentId) {
-      newPath += "|" + parentId;
+      newPath += PATH_SEPARATOR + parentId;
     }
 
     return newPath;
@@ -75,44 +76,41 @@ const Branch = ({
           {open ? <small>Collapse</small> : <small>Expand</small>}
         </Button>
       </div>
-      <ul style={{ display: open ? "block" : "none" }}>
-        {/* We 're using the createNewPath function so that we can easily find the dropped
-        component in the Tree component */}
+      <Ul style={{ display: open ? "block" : "none" }}>
+        {console.log(nodePath)}
         <Droppable key={id} droppableId={nodePath || id}>
           {(provided) => (
-            <div {...provided.droppableProps} ref={provided.innerRef}>
+            <FlexDiv {...provided.droppableProps} ref={provided.innerRef}>
               {provided.placeholder}
-              <FlexDiv>
-                <ListCell
-                  index={index}
-                  name={name}
-                  items={items}
-                  parentId={id}
-                  onItemCheck={handleItemCheck}
-                  onAddCell={handleAddCell}
-                  onRemoveCell={handleRemoveCell}
-                  onEditCellName={handleEditCellName}
-                  onAddCellItem={handleAddCellItem}
-                />
-              </FlexDiv>
-              {children &&
-                children.map((individualChild, childIndex) => (
-                  <Branch
-                    key={individualChild.id}
-                    index={childIndex}
-                    objectBranch={individualChild}
-                    parentId={id}
-                    onItemCheck={handleItemCheck}
-                    onAddCell={handleAddCell}
-                    onRemoveCell={handleRemoveCell}
-                    onEditCellName={handleEditCellName}
-                    onAddCellItem={handleAddCellItem}
-                  />
-                ))}
-            </div>
+              <ListCell
+                index={index}
+                name={name}
+                items={items}
+                parentId={id}
+                onItemCheck={handleItemCheck}
+                onAddCell={handleAddCell}
+                onRemoveCell={handleRemoveCell}
+                onEditCellName={handleEditCellName}
+                onAddCellItem={handleAddCellItem}
+              />
+            </FlexDiv>
           )}
         </Droppable>
-      </ul>
+        {children &&
+          children.map((individualChild, childIndex) => (
+            <Branch
+              key={individualChild.id}
+              index={childIndex}
+              objectBranch={individualChild}
+              parentId={id}
+              onItemCheck={handleItemCheck}
+              onAddCell={handleAddCell}
+              onRemoveCell={handleRemoveCell}
+              onEditCellName={handleEditCellName}
+              onAddCellItem={handleAddCellItem}
+            />
+          ))}
+      </Ul>
     </div>
   );
 };

@@ -1,10 +1,24 @@
 import { useState } from "react";
 
 import { v4 as uuidv4 } from "uuid";
-import { UUIDV4_NAMESPACE } from "../constants";
+import { UUIDV4_NAMESPACE, PATH_SEPARATOR } from "../constants";
 
 const useTree = (initialTree) => {
   const [tree, setTree] = useState(initialTree);
+
+  const handleNewTree = (values) => {
+    const newId = uuidv4(UUIDV4_NAMESPACE);
+
+    const firstNode = {
+      name: values.name,
+      id: newId,
+      items: null,
+      nodePath: newId,
+      children: [],
+    };
+
+    setTree([firstNode]);
+  };
 
   const handleCellRemove = (path) => {
     let newTree = [...tree];
@@ -16,16 +30,16 @@ const useTree = (initialTree) => {
 
   const handleCellAdd = (path, values) => {
     const newTree = [...tree];
-
-    // console.log(path);
-
     let currentParentNode = findTreeNode(newTree, path);
+
+    const newId = uuidv4(UUIDV4_NAMESPACE);
+    const nodePath = `${newId}|${path}`;
 
     const newNode = {
       name: values.name,
-      id: uuidv4(UUIDV4_NAMESPACE),
+      id: newId,
       items: null,
-      nodePath: path,
+      nodePath,
       children: [],
     };
 
@@ -81,7 +95,15 @@ const useTree = (initialTree) => {
 
   const handleDragItem = (source, destination) => {
     const newTree = [...tree];
-    const sourceCurrentParentNode = findTreeNode(newTree, source.droppableId);
+
+    const [sourceNode, destinationNode] = getDragAndDropNodes(
+      newTree,
+      source,
+      destination
+    );
+
+    console.log("sourceNode", sourceNode);
+    console.log("destinationNode", destinationNode);
   };
 
   return {
@@ -92,18 +114,59 @@ const useTree = (initialTree) => {
     handleEditCellName,
     handleAddCellItem,
     handleDragItem,
+    handleNewTree,
     setTree,
   };
 };
 
 export default useTree;
 
+const pathIsSingleId = (path) => path.split(PATH_SEPARATOR).length === 1;
+
+const getDragAndDropNodes = (tree, source, destination) => {
+  const sourceCurrentParentNode = findTreeNode(tree, source.droppableId);
+  const sourceIsRoot = pathIsSingleId(source.droppableId);
+
+  const sourceNode = _getDragAndDropNode(
+    sourceCurrentParentNode,
+    sourceIsRoot,
+    source.index
+  );
+
+  const destinationCurrentParentNode = findTreeNode(
+    tree,
+    destination.droppableId
+  );
+  const destinationIsRoot = pathIsSingleId(destination.droppableId);
+
+  const destinationNode = _getDragAndDropNode(
+    destinationCurrentParentNode,
+    destinationIsRoot,
+    destination.index
+  );
+
+  return [sourceNode, destinationNode];
+};
+
+const _getDragAndDropNode = (nodeToDiff, isRoot, index) => {
+  let node = null;
+  // Get correct node
+  // If we're on a root or a leaf
+  if (isRoot || !nodeToDiff.children) {
+    node = nodeToDiff;
+  } else {
+    node = nodeToDiff.children[index];
+  }
+
+  return node;
+};
+
 const findTreeNode = (tree, path) => {
   let currentParentNode = null;
 
   if (!path) return currentParentNode;
 
-  const splittedPath = path.split("|").reverse();
+  const splittedPath = path.split(PATH_SEPARATOR).reverse();
 
   // Finding the tree
   for (let i = 0; i < splittedPath.length; i++) {
@@ -120,7 +183,7 @@ const findTreeNode = (tree, path) => {
 };
 
 const deleteTreeNode = (tree, path) => {
-  const splittedPath = path.split("|").reverse();
+  const splittedPath = path.split(PATH_SEPARATOR).reverse();
 
   let currentParentNode = null;
 
