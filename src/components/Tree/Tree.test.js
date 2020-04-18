@@ -121,3 +121,5 @@ test("Drags a root node to another root, changing the order", () => {});
 test("Drags a node to another branch", () => {});
 
 test("Prevents dragging a node deeper in its own branch", () => {});
+
+test("Drags a node with children and then drags one of the children", () => {});

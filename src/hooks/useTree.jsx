@@ -156,10 +156,14 @@ const useTree = (initialTree) => {
       // We need to update the nodePath
       sourceNode.nodePath = sourceNode.id;
 
+      // Recursively Propagate nodePath changes to all the children
+      if (sourceNode.children)
+        sourceNode.children.forEach((node) =>
+          recursivelyUpdateNodePath(node, sourceNode.nodePath)
+        );
+
       newTree.splice(destinationNodeIndex, 0, sourceNode);
     } else {
-      console.log(destinationParentNodePath);
-
       const destinationParentNode = findTreeNode(
         newTree,
         destinationParentNodePath
@@ -171,10 +175,13 @@ const useTree = (initialTree) => {
 
       // We'll probably leave this out from future abstraction
       // We need to update the nodePath
-      // THROWING ERROR BECAUSE OF THIS
-      // WE ARE PUTTING A ROOT ID IN THE BEGINNING OF NODE PATH
-      // THIS CAUSES ERROR IN THE findTreeNode() FUNCTION
       sourceNode.nodePath = `${sourceNode.id}${PATH_SEPARATOR}${destinationParentNodePath}`;
+
+      // Recursively Propagate nodePath changes to all the children
+      if (sourceNode.children)
+        sourceNode.children.forEach((node) =>
+          recursivelyUpdateNodePath(node, sourceNode.nodePath)
+        );
 
       // Inserting source node to destination
       destinationParentNode.children.splice(
@@ -202,12 +209,19 @@ const useTree = (initialTree) => {
 
 export default useTree;
 
+const recursivelyUpdateNodePath = (node, parentNodePath) => {
+  node.nodePath = `${node.id}|${parentNodePath}`;
+
+  if (node.children && node.children.length > 0)
+    node.children.forEach((childNode) =>
+      recursivelyUpdateNodePath(childNode, node.nodePath)
+    );
+};
+
 const findTreeNode = (tree, path) => {
   let currentParentNode = null;
 
   if (!path) return currentParentNode;
-
-  debugger;
 
   const splittedPath = path.split(PATH_SEPARATOR).reverse();
 
