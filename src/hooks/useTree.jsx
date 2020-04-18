@@ -96,14 +96,13 @@ const useTree = (initialTree) => {
   const handleDragItem = (source, destination) => {
     const newTree = [...tree];
 
-    console.log("source", source);
-    console.log("destination", destination);
     // Solve use case where we drag inside a branch
     const sourceDroppableIdArray = source.droppableId.split(PATH_SEPARATOR);
     const destinationDroppableIdArray = destination.droppableId.split(
       PATH_SEPARATOR
     );
 
+    // TODO: Write unit test using Cypress
     // Solve use case for when source is not a root
     if (sourceDroppableIdArray.length > 1) {
       const sourceIdIndex = 0;
@@ -113,6 +112,7 @@ const useTree = (initialTree) => {
         .join(PATH_SEPARATOR);
 
       const sourceParentNode = findTreeNode(newTree, sourceParentNodePath);
+      console.log(sourceParentNode);
       const sourceNodeIndex = sourceParentNode.children.findIndex(
         (node) => node.id === sourceDroppableIdArray[sourceIdIndex]
       );
@@ -134,9 +134,14 @@ const useTree = (initialTree) => {
         newTree,
         destinationParentNodePath
       );
+      console.log(destinationParentNode);
       const destinationNodeIndex = destinationParentNode.children.findIndex(
         (node) => node.id === destinationDroppableIdArray[destinationIdIndex]
       );
+
+      // We'll probably leave this out from future abstraction
+      // We need to update the nodePath
+      sourceNode.nodePath = `${sourceNode.id}${PATH_SEPARATOR}${destinationParentNodePath}`;
 
       // Inserting source node to destination
       destinationParentNode.children.splice(

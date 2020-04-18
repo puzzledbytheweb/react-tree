@@ -96,6 +96,7 @@ const Branch = ({
           )}
         </Droppable>
         {children &&
+          children.length > 0 &&
           children.map((individualChild, childIndex) => (
             <Branch
               key={individualChild.id}
