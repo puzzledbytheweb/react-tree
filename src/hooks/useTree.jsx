@@ -96,24 +96,57 @@ const useTree = (initialTree) => {
   const handleDragItem = (source, destination) => {
     const newTree = [...tree];
 
-    const {
-      sourceNode,
-      sourceParentNode,
-      destinationNode,
-    } = getDragAndDropNodes(newTree, source, destination);
+    console.log("source", source);
+    console.log("destination", destination);
+    // Solve use case where we drag inside a branch
+    const sourceDroppableIdArray = source.droppableId.split(PATH_SEPARATOR);
+    const destinationDroppableIdArray = destination.droppableId.split(
+      PATH_SEPARATOR
+    );
 
-    // TODO: Now that I have sourceNode and destinationNode I can put the source node where destinationNode is
-    // Check if destinationNode is a root
-    const destinationIsRoot = pathIsSingleId(destinationNode.nodePath);
+    // Solve use case for when source is not a root
+    if (sourceDroppableIdArray.length > 1) {
+      const sourceIdIndex = 0;
+      const sourceParentIdIndex = 1;
+      const sourceParentNodePath = sourceDroppableIdArray
+        .slice(sourceParentIdIndex)
+        .join(PATH_SEPARATOR);
 
-    let destinationIndex;
-    let sourceIndex;
+      const sourceParentNode = findTreeNode(newTree, sourceParentNodePath);
+      const sourceNodeIndex = sourceParentNode.children.findIndex(
+        (node) => node.id === sourceDroppableIdArray[sourceIdIndex]
+      );
 
-    if (destinationIsRoot) {
-      destinationIndex = tree.findIndex(
-        (node) => node.id === destinationNode.id
+      // Remove source node from children of parent node
+      const sourceNode = sourceParentNode.children.splice(
+        sourceNodeIndex,
+        1
+      )[0];
+      // |||||||||||||||||||||||||||||||||||||||||||||||||
+
+      const destinationIdIndex = 0;
+      const destinationParentIdIndex = 1;
+      const destinationParentNodePath = destinationDroppableIdArray
+        .slice(destinationParentIdIndex)
+        .join(PATH_SEPARATOR);
+
+      const destinationParentNode = findTreeNode(
+        newTree,
+        destinationParentNodePath
+      );
+      const destinationNodeIndex = destinationParentNode.children.findIndex(
+        (node) => node.id === destinationDroppableIdArray[destinationIdIndex]
+      );
+
+      // Inserting source node to destination
+      destinationParentNode.children.splice(
+        destinationNodeIndex,
+        0,
+        sourceNode
       );
     }
+
+    setTree(newTree);
   };
 
   return {
@@ -130,51 +163,6 @@ const useTree = (initialTree) => {
 };
 
 export default useTree;
-
-const pathIsSingleId = (path) => path.split(PATH_SEPARATOR).length === 1;
-
-const getDragAndDropNodes = (tree, source, destination) => {
-  const sourceFirstAttemptNode = findTreeNode(tree, source.droppableId);
-  const sourceIsRoot = pathIsSingleId(source.droppableId);
-
-  const sourceNode = _getDragAndDropNode(
-    sourceFirstAttemptNode,
-    sourceIsRoot,
-    source.index
-  );
-
-  const destinationFirstAttemptNode = findTreeNode(
-    tree,
-    destination.droppableId
-  );
-  const destinationIsRoot = pathIsSingleId(destination.droppableId);
-
-  const destinationNode = _getDragAndDropNode(
-    destinationFirstAttemptNode,
-    destinationIsRoot,
-    destination.index
-  );
-
-  return {
-    sourceParentNode: sourceNode,
-    sourceNode,
-    destinationNode,
-  };
-};
-
-const _getDragAndDropNode = (nodeToDiff, isRoot, index) => {
-  let node = nodeToDiff;
-
-  if (isRoot) return node;
-
-  // Get correct node
-  // If we're NOT on a root or a leaf
-  if (nodeToDiff.children) {
-    node = nodeToDiff.children[index];
-  }
-
-  return node;
-};
 
 const findTreeNode = (tree, path) => {
   let currentParentNode = null;

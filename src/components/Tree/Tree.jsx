@@ -43,9 +43,6 @@ const Tree = ({ initialTree = null }) => {
     )
       return;
 
-    console.log("source", source);
-    console.log("destination", destination);
-
     handleDragItem(source, destination);
   };
 
