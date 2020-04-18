@@ -33,7 +33,7 @@ const useTree = (initialTree) => {
     let currentParentNode = findTreeNode(newTree, path);
 
     const newId = uuidv4(UUIDV4_NAMESPACE);
-    const nodePath = `${newId}|${path}`;
+    const nodePath = path ? `${newId}|${path}` : newId;
 
     const newNode = {
       name: values.name,
@@ -111,17 +111,28 @@ const useTree = (initialTree) => {
         .slice(sourceParentIdIndex)
         .join(PATH_SEPARATOR);
 
-      const sourceParentNode = findTreeNode(newTree, sourceParentNodePath);
-      console.log(sourceParentNode);
-      const sourceNodeIndex = sourceParentNode.children.findIndex(
-        (node) => node.id === sourceDroppableIdArray[sourceIdIndex]
-      );
+      let sourceNodeIndex = null;
+      let sourceNode = null;
+      if (!sourceParentNodePath) {
+        console.log("NO PARENT NODE!");
+        sourceNodeIndex = newTree.findIndex(
+          (node) => node.id === destinationDroppableIdArray[destinationIdIndex]
+        );
 
-      // Remove source node from children of parent node
-      const sourceNode = sourceParentNode.children.splice(
-        sourceNodeIndex,
-        1
-      )[0];
+        // Remove source node from tree
+        sourceNode = newTree.splice(sourceNodeIndex, 1)[0];
+      } else {
+        console.log("PARENT NODE!");
+
+        const sourceParentNode = findTreeNode(newTree, sourceParentNodePath);
+
+        sourceNodeIndex = sourceParentNode.children.findIndex(
+          (node) => node.id === sourceDroppableIdArray[sourceIdIndex]
+        );
+
+        // Remove source node from children of parent node
+        sourceNode = sourceParentNode.children.splice(sourceNodeIndex, 1)[0];
+      }
       // |||||||||||||||||||||||||||||||||||||||||||||||||
 
       const destinationIdIndex = 0;
@@ -130,25 +141,41 @@ const useTree = (initialTree) => {
         .slice(destinationParentIdIndex)
         .join(PATH_SEPARATOR);
 
-      const destinationParentNode = findTreeNode(
-        newTree,
-        destinationParentNodePath
-      );
-      console.log(destinationParentNode);
-      const destinationNodeIndex = destinationParentNode.children.findIndex(
-        (node) => node.id === destinationDroppableIdArray[destinationIdIndex]
-      );
+      console.log(!destinationParentNodePath);
 
-      // We'll probably leave this out from future abstraction
-      // We need to update the nodePath
-      sourceNode.nodePath = `${sourceNode.id}${PATH_SEPARATOR}${destinationParentNodePath}`;
+      let destinationNodeIndex = null;
+      // Check if destination is a root (has no parent)
+      if (!destinationParentNodePath) {
+        destinationNodeIndex = newTree.findIndex(
+          (node) => node.id === destinationDroppableIdArray[destinationIdIndex]
+        );
 
-      // Inserting source node to destination
-      destinationParentNode.children.splice(
-        destinationNodeIndex,
-        0,
-        sourceNode
-      );
+        // We'll probably leave this out from future abstraction
+        // We need to update the nodePath
+        sourceNode.nodePath = sourceNode.id;
+
+        newTree.splice(destinationNodeIndex, 0, sourceNode);
+      } else {
+        const destinationParentNode = findTreeNode(
+          newTree,
+          destinationParentNodePath
+        );
+
+        destinationNodeIndex = destinationParentNode.children.findIndex(
+          (node) => node.id === destinationDroppableIdArray[destinationIdIndex]
+        );
+
+        // We'll probably leave this out from future abstraction
+        // We need to update the nodePath
+        sourceNode.nodePath = `${sourceNode.id}${PATH_SEPARATOR}${destinationParentNodePath}`;
+
+        // Inserting source node to destination
+        destinationParentNode.children.splice(
+          destinationNodeIndex,
+          0,
+          sourceNode
+        );
+      }
     }
 
     setTree(newTree);
