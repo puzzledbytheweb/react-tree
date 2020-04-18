@@ -53,7 +53,7 @@ const ListCell = ({
           <TitleAndButtonsDiv>
             <h4 style={{ marginRight: 8 }}>{name}</h4>
             <ButtonWithForm
-              data-testid="editNodeForm"
+              role="edit"
               formInitialValues={{ name: "" }}
               onSubmit={handleEditSubmission}
               button={
@@ -71,6 +71,7 @@ const ListCell = ({
               <FontAwesomeIcon size="xs" icon="trash-alt" />
             </Button>
             <ButtonWithForm
+              role="addNode"
               formInitialValues={createNewEmptyNode()}
               onSubmit={handleAddCell}
               button={
@@ -102,7 +103,7 @@ const ListCell = ({
                 </ListGroupItem>
               ))}
             <ButtonWithForm
-              data-testid="editNodeForm"
+              role="addItem"
               formInitialValues={createNewEmptyNodeItem()}
               onSubmit={handleAddCellItem}
               button={

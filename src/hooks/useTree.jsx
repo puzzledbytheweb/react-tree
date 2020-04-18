@@ -96,86 +96,92 @@ const useTree = (initialTree) => {
   const handleDragItem = (source, destination) => {
     const newTree = [...tree];
 
-    // Solve use case where we drag inside a branch
     const sourceDroppableIdArray = source.droppableId.split(PATH_SEPARATOR);
     const destinationDroppableIdArray = destination.droppableId.split(
       PATH_SEPARATOR
     );
+    const sourceIdIndex = 0;
+    const sourceId = sourceDroppableIdArray[sourceIdIndex];
+    const sourceParentIdIndex = 1;
+    const sourceParentNodePath = sourceDroppableIdArray
+      .slice(sourceParentIdIndex)
+      .join(PATH_SEPARATOR);
 
+    const destinationIdIndex = 0;
+    const destinationParentIdIndex = 1;
+    const destinationParentId =
+      destinationDroppableIdArray[destinationParentIdIndex];
+
+    // Check if destination parent node is the same as the source node and do nothing
+    // This will probably be usable for the use case when source node is part
+    // of the parent chain for destination node
+    if (sourceId === destinationParentId) return;
+
+    const destinationParentNodePath = destinationDroppableIdArray
+      .slice(destinationParentIdIndex)
+      .join(PATH_SEPARATOR);
+
+    let destinationNodeIndex = null;
+
+    let sourceNode = null;
+
+    // DEALING WITH SOURCE
     // TODO: Write unit test using Cypress
     // Solve use case for when source is not a root
     if (sourceDroppableIdArray.length > 1) {
-      const sourceIdIndex = 0;
-      const sourceParentIdIndex = 1;
-      const sourceParentNodePath = sourceDroppableIdArray
-        .slice(sourceParentIdIndex)
-        .join(PATH_SEPARATOR);
+      const sourceParentNode = findTreeNode(newTree, sourceParentNodePath);
 
-      let sourceNodeIndex = null;
-      let sourceNode = null;
-      if (!sourceParentNodePath) {
-        console.log("NO PARENT NODE!");
-        sourceNodeIndex = newTree.findIndex(
-          (node) => node.id === destinationDroppableIdArray[destinationIdIndex]
-        );
+      const sourceNodeIndex = sourceParentNode.children.findIndex(
+        (node) => node.id === sourceId
+      );
 
-        // Remove source node from tree
-        sourceNode = newTree.splice(sourceNodeIndex, 1)[0];
-      } else {
-        console.log("PARENT NODE!");
+      // Remove source node from children of parent node
+      sourceNode = sourceParentNode.children.splice(sourceNodeIndex, 1)[0];
+    } else {
+      // This is the code for when source node is a root
+      console.log("source node is a root!");
 
-        const sourceParentNode = findTreeNode(newTree, sourceParentNodePath);
+      // Delete sourceNode from newTree
+      sourceNode = newTree.splice(source.index, 1)[0];
+    }
 
-        sourceNodeIndex = sourceParentNode.children.findIndex(
-          (node) => node.id === sourceDroppableIdArray[sourceIdIndex]
-        );
+    // DEALING WITH DESTINATION
+    // Check if destination is a root (has no parent)
+    if (!destinationParentNodePath) {
+      destinationNodeIndex = newTree.findIndex(
+        (node) => node.id === destinationDroppableIdArray[destinationIdIndex]
+      );
 
-        // Remove source node from children of parent node
-        sourceNode = sourceParentNode.children.splice(sourceNodeIndex, 1)[0];
-      }
-      // |||||||||||||||||||||||||||||||||||||||||||||||||
+      // We'll probably leave this out from future abstraction
+      // We need to update the nodePath
+      sourceNode.nodePath = sourceNode.id;
 
-      const destinationIdIndex = 0;
-      const destinationParentIdIndex = 1;
-      const destinationParentNodePath = destinationDroppableIdArray
-        .slice(destinationParentIdIndex)
-        .join(PATH_SEPARATOR);
+      newTree.splice(destinationNodeIndex, 0, sourceNode);
+    } else {
+      console.log(destinationParentNodePath);
 
-      console.log(!destinationParentNodePath);
+      const destinationParentNode = findTreeNode(
+        newTree,
+        destinationParentNodePath
+      );
 
-      let destinationNodeIndex = null;
-      // Check if destination is a root (has no parent)
-      if (!destinationParentNodePath) {
-        destinationNodeIndex = newTree.findIndex(
-          (node) => node.id === destinationDroppableIdArray[destinationIdIndex]
-        );
+      destinationNodeIndex = destinationParentNode.children.findIndex(
+        (node) => node.id === destinationDroppableIdArray[destinationIdIndex]
+      );
 
-        // We'll probably leave this out from future abstraction
-        // We need to update the nodePath
-        sourceNode.nodePath = sourceNode.id;
+      // We'll probably leave this out from future abstraction
+      // We need to update the nodePath
+      // THROWING ERROR BECAUSE OF THIS
+      // WE ARE PUTTING A ROOT ID IN THE BEGINNING OF NODE PATH
+      // THIS CAUSES ERROR IN THE findTreeNode() FUNCTION
+      sourceNode.nodePath = `${sourceNode.id}${PATH_SEPARATOR}${destinationParentNodePath}`;
 
-        newTree.splice(destinationNodeIndex, 0, sourceNode);
-      } else {
-        const destinationParentNode = findTreeNode(
-          newTree,
-          destinationParentNodePath
-        );
-
-        destinationNodeIndex = destinationParentNode.children.findIndex(
-          (node) => node.id === destinationDroppableIdArray[destinationIdIndex]
-        );
-
-        // We'll probably leave this out from future abstraction
-        // We need to update the nodePath
-        sourceNode.nodePath = `${sourceNode.id}${PATH_SEPARATOR}${destinationParentNodePath}`;
-
-        // Inserting source node to destination
-        destinationParentNode.children.splice(
-          destinationNodeIndex,
-          0,
-          sourceNode
-        );
-      }
+      // Inserting source node to destination
+      destinationParentNode.children.splice(
+        destinationNodeIndex,
+        0,
+        sourceNode
+      );
     }
 
     setTree(newTree);
@@ -201,9 +207,11 @@ const findTreeNode = (tree, path) => {
 
   if (!path) return currentParentNode;
 
+  debugger;
+
   const splittedPath = path.split(PATH_SEPARATOR).reverse();
 
-  // Finding the tree
+  // Finding the node
   for (let i = 0; i < splittedPath.length; i++) {
     if (i === 0) {
       currentParentNode = tree.find((node) => node.id === splittedPath[i]);

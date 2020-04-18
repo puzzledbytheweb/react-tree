@@ -11,7 +11,7 @@ import { createNewEmptyNode } from "../../utils";
 import Branch from "../Branch/Branch";
 import ButtonWithForm from "../ButtonWithForm/ButtonWithForm";
 
-const Tree = ({ initialTree = null }) => {
+const Tree = ({ initialTree = null, dndSensors = [] }) => {
   const {
     tree,
     handleItemCheck,
@@ -71,7 +71,7 @@ const Tree = ({ initialTree = null }) => {
           </Button>
         }
       />
-      <DragDropContext onDragEnd={handleDragEnd}>
+      <DragDropContext onDragEnd={handleDragEnd} sensors={dndSensors}>
         {tree.map((branch, index) => {
           return (
             // <Droppable key={branch.id} droppableId={branch.id}>

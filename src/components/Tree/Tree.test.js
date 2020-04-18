@@ -50,10 +50,15 @@ test("Checks an item in any branch of the tree", () => {
 test("Adds a new node to the tree", () => {
   const { queryByText, getByText } = render(<Tree initialTree={initialTree} />);
 
-  const yoYo = getByText("yo.yo").parentElement;
+  const yoYo = getByText("yo.yo").parentNode.parentNode;
+
   const yoYoChildName = "newChildFromYoYo";
 
-  const addNewNodeFormYoYo = within(yoYo).getByTestId("addNodeForm");
+  const addNewNodeFormDivYoYo = yoYo.querySelector('div[role="addNode"]');
+  const addNewNodeFormYoYo = addNewNodeFormDivYoYo.getElementsByTagName(
+    "form"
+  )[0];
+
   const addNewNodeFormInputYoYo = addNewNodeFormYoYo.querySelector(
     'input[name="name"]'
   );
@@ -86,21 +91,33 @@ test("Removes a node from the tree", () => {
 test("Adds a new item to a node", () => {
   const { queryByText, getByText } = render(<Tree initialTree={initialTree} />);
 
-  const yoYo = getByText("yo").parentElement;
-  const yoYoNewItemName = "newItemFromYoYo";
+  const yo = getByText("yo").parentElement.parentElement;
+  const yoNewItemName = "newItemFromYo";
 
-  const addNewNodeItemFormYoYo = within(yoYo).getByTestId("addNodeItemForm");
-  const addNewNodeFormInputYoYo = addNewNodeItemFormYoYo.querySelector(
-    'input[name="name"]'
-  );
+  const addNewNodeItemButtonYo = within(yo).getByText("Add Property")
+    .parentNode;
 
-  expect(queryByText(yoYoNewItemName)).toBeFalsy();
+  const adjacentDiv = addNewNodeItemButtonYo.previousSibling;
 
-  fireEvent.change(addNewNodeFormInputYoYo, {
-    target: { value: yoYoNewItemName },
+  const addNewNodeFormInputYo = adjacentDiv.querySelector('input[name="name"]');
+
+  const addNewNodeItemFormYo = addNewNodeFormInputYo.parentNode;
+
+  expect(queryByText(yoNewItemName)).toBeFalsy();
+
+  fireEvent.change(addNewNodeFormInputYo, {
+    target: { value: yoNewItemName },
   });
 
-  fireEvent.submit(addNewNodeItemFormYoYo);
+  fireEvent.submit(addNewNodeItemFormYo);
 
-  expect(queryByText(yoYoNewItemName)).toBeTruthy();
+  expect(queryByText(yoNewItemName)).toBeTruthy();
 });
+
+test("Drags a leaf node to up in its branch", () => {});
+
+test("Drags a root node to another root, changing the order", () => {});
+
+test("Drags a node to another branch", () => {});
+
+test("Prevents dragging a node deeper in its own branch", () => {});

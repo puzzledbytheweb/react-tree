@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import useOpen from "../../hooks/useOpen";
 import FormWithNameInput from "../FormWithNameInput/FormWithNameInput";
 
-const ButtonWithForm = ({ onSubmit, button, formInitialValues }) => {
+const ButtonWithForm = ({ onSubmit, button, formInitialValues, role }) => {
   const { open, toggleOpen } = useOpen(false);
 
   const handleSubmission = (values) => {
@@ -14,9 +14,8 @@ const ButtonWithForm = ({ onSubmit, button, formInitialValues }) => {
 
   return (
     <>
-      <div style={{ display: open ? "initial" : "none" }}>
+      <div role={role} style={{ display: open ? "initial" : "none" }}>
         <FormWithNameInput
-          data-testid="editNodeForm"
           onSubmit={handleSubmission}
           initialValues={formInitialValues}
         />
@@ -29,6 +28,7 @@ ButtonWithForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   button: PropTypes.element.isRequired,
   formInitialValues: PropTypes.object.isRequired,
+  role: PropTypes.string,
 };
 
 export default ButtonWithForm;

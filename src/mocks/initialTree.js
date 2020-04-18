@@ -4,8 +4,8 @@ import { UUIDV4_NAMESPACE } from "../constants";
 export default [
   {
     name: "yo",
-    id: uuidv4(UUIDV4_NAMESPACE),
-    items: [{ name: "yo.item", id: uuidv4(UUIDV4_NAMESPACE), checked: true }],
+    id: "yo",
+    items: [{ name: "yo.item", id: "yo.item", checked: true }],
     children: [
       {
         name: "yo.yo",
