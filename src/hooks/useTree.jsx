@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { v4 as uuidv4 } from "uuid";
 import { UUIDV4_NAMESPACE, PATH_SEPARATOR } from "../constants";
@@ -11,6 +11,24 @@ import {
 
 const useTree = (initialTree) => {
   const [tree, setTree] = useState(initialTree);
+
+  // This enables using an initial tree and benefitting from the drag and drop feature
+  useEffect(() => {
+    // We'll add nodePath to the initial tree nodes
+    if (initialTree) {
+      const newTree = [...initialTree];
+
+      newTree.forEach((node) => {
+        node.nodePath = node.id;
+
+        node.children.forEach((childNode) =>
+          recursivelyUpdateNodePath(childNode, node.nodePath)
+        );
+      });
+
+      setTree(newTree);
+    }
+  }, [initialTree]);
 
   const handleNewTree = (values) => {
     const newId = uuidv4(UUIDV4_NAMESPACE);
