@@ -1,10 +1,28 @@
 import React from "react";
-import { render, fireEvent, within } from "@testing-library/react";
+import { render, fireEvent, within, cleanup } from "@testing-library/react";
 import "../../fontawesome";
 
 import initialTree from "../../mocks/initialTree";
 
 import Tree from "./Tree";
+
+/* These are the tests to test the drag and drop functionality.
+Unfortunately I couldn't find a way to test this without having to 
+dig too much. The library I've used does not provide a simple testing guide
+like React DnD does https://react-dnd.github.io/react-dnd/docs/testing. I'm thinking of
+maybe investigating a bit further and try to come up with a simple API to allow
+programmatic dragging and dropping to ease testing with this library, but I think it may be a 
+bit out of scope for this challenge. */
+
+test("Drags a leaf node to up in its branch", async () => {});
+
+test("Drags a root node to another root, changing the order", () => {});
+
+test("Drags a node to another branch", () => {});
+
+test("Prevents dragging a node deeper in its own branch", () => {});
+
+test("Drags a node with children and then drags one of the children", () => {});
 
 test("Does typechecking on objectTree", () => {
   // We're preventing console to be poluted with console error calls
@@ -86,6 +104,8 @@ test("Removes a node from the tree", () => {
   yoYo = queryByText("yo.yo");
 
   expect(yoYo).toBeFalsy();
+
+  cleanup();
 });
 
 test("Adds a new item to a node", () => {
@@ -113,13 +133,3 @@ test("Adds a new item to a node", () => {
 
   expect(queryByText(yoNewItemName)).toBeTruthy();
 });
-
-test("Drags a leaf node to up in its branch", () => {});
-
-test("Drags a root node to another root, changing the order", () => {});
-
-test("Drags a node to another branch", () => {});
-
-test("Prevents dragging a node deeper in its own branch", () => {});
-
-test("Drags a node with children and then drags one of the children", () => {});

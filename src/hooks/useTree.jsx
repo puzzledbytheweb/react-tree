@@ -21,9 +21,10 @@ const useTree = (initialTree) => {
       newTree.forEach((node) => {
         node.nodePath = node.id;
 
-        node.children.forEach((childNode) =>
-          recursivelyUpdateNodePath(childNode, node.nodePath)
-        );
+        if (node.children)
+          node.children.forEach((childNode) =>
+            recursivelyUpdateNodePath(childNode, node.nodePath)
+          );
       });
 
       setTree(newTree);
